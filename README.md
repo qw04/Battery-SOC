@@ -1,10 +1,11 @@
 # Battery SOC Estimation
 
-Python implementation of several SOC-estimation approaches from
-[literature_review.md](literature_review.md), trained/evaluated on the NASA
-Randomized Battery Usage Dataset and the Oxford Battery Degradation Dataset 1.
-See [`.claude/plans` / the approved implementation plan] for full design
-rationale; this file is the practical how-to-run guide.
+Python implementation of several SOC-estimation approaches from the
+[**Literature Review**](https://qw04.github.io/Battery-SOC/literature_review.html),
+trained/evaluated on the NASA Randomized Battery Usage Dataset and the Oxford
+Battery Degradation Dataset 1. This file is the practical how-to-run guide;
+see the literature review for the papers, per-paper novelty summaries, and
+citations behind each implemented model.
 
 ## Setup
 
