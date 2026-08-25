@@ -1,0 +1,721 @@
+=== Re-preprocessing nasa/oxford at the new window config (window_len=50, dt=1.0s) ===
+[nasa] labeling RW10 (8596025 rows)...
+[nasa] windowing RW10...
+[nasa] RW10: 63080 windows
+[nasa] labeling RW11 (8664510 rows)...
+[nasa] windowing RW11...
+[nasa] RW11: 63136 windows
+[nasa] labeling RW12 (8638882 rows)...
+[nasa] windowing RW12...
+[nasa] RW12: 62219 windows
+[nasa] labeling RW9 (8532073 rows)...
+[nasa] windowing RW9...
+[nasa] RW9: 63441 windows
+[nasa] saved C:\Users\shahs\battery_soc\data\processed\nasa.npz: train=161209 val=28448 test=62219
+[oxford] parsing raw .mat file...
+[oxford] labeling 15264130 rows...
+[oxford] windowing...
+[oxford] saved C:\Users\shahs\battery_soc\data\processed\oxford.npz: train=11973 val=2112 test=5870
+[oxford] saved OCV reference cycles -> C:\Users\shahs\battery_soc\data\processed\oxford_ocv_cycles.csv
+
+=== Training standard-window models (lstm, cnn_unet, conv_ulsam_sru, baseline_svr, baseline_rf) on nasa/oxford/both ===
+
+>>> python -m src.train --model lstm --dataset nasa
+[lstm/nasa] epoch   1  train_loss=0.03660  val_rmse=17.850%
+[lstm/nasa] epoch   2  train_loss=0.03166  val_rmse=17.380%
+[lstm/nasa] epoch   3  train_loss=0.03050  val_rmse=16.864%
+[lstm/nasa] epoch   4  train_loss=0.02936  val_rmse=16.594%
+[lstm/nasa] epoch   5  train_loss=0.02894  val_rmse=16.339%
+[lstm/nasa] epoch   6  train_loss=0.02900  val_rmse=15.939%
+[lstm/nasa] epoch   7  train_loss=0.02569  val_rmse=15.398%
+[lstm/nasa] epoch   8  train_loss=0.02469  val_rmse=15.198%
+[lstm/nasa] epoch   9  train_loss=0.02446  val_rmse=15.643%
+[lstm/nasa] epoch  10  train_loss=0.02417  val_rmse=14.873%
+[lstm/nasa] epoch  11  train_loss=0.02412  val_rmse=14.900%
+[lstm/nasa] epoch  12  train_loss=0.02357  val_rmse=14.836%
+[lstm/nasa] epoch  13  train_loss=0.02363  val_rmse=14.839%
+[lstm/nasa] epoch  14  train_loss=0.02314  val_rmse=14.665%
+[lstm/nasa] epoch  15  train_loss=0.02263  val_rmse=14.579%
+[lstm/nasa] epoch  16  train_loss=0.02417  val_rmse=14.827%
+[lstm/nasa] epoch  17  train_loss=0.02269  val_rmse=14.812%
+[lstm/nasa] epoch  18  train_loss=0.02235  val_rmse=14.674%
+[lstm/nasa] epoch  19  train_loss=0.02207  val_rmse=14.439%
+[lstm/nasa] epoch  20  train_loss=0.02200  val_rmse=15.127%
+[lstm/nasa] epoch  21  train_loss=0.02228  val_rmse=14.422%
+[lstm/nasa] epoch  22  train_loss=0.02190  val_rmse=14.222%
+[lstm/nasa] epoch  23  train_loss=0.02150  val_rmse=14.202%
+[lstm/nasa] epoch  24  train_loss=0.02141  val_rmse=14.400%
+[lstm/nasa] epoch  25  train_loss=0.02165  val_rmse=14.297%
+[lstm/nasa] epoch  26  train_loss=0.02205  val_rmse=14.510%
+[lstm/nasa] epoch  27  train_loss=0.02219  val_rmse=14.320%
+[lstm/nasa] epoch  28  train_loss=0.02109  val_rmse=14.029%
+[lstm/nasa] epoch  29  train_loss=0.02106  val_rmse=14.176%
+[lstm/nasa] epoch  30  train_loss=0.02098  val_rmse=14.042%
+[lstm/nasa] epoch  31  train_loss=0.02108  val_rmse=13.976%
+[lstm/nasa] epoch  32  train_loss=0.02096  val_rmse=14.042%
+[lstm/nasa] epoch  33  train_loss=0.02104  val_rmse=14.076%
+[lstm/nasa] epoch  34  train_loss=0.02106  val_rmse=14.089%
+[lstm/nasa] epoch  35  train_loss=0.02103  val_rmse=14.268%
+[lstm/nasa] epoch  36  train_loss=0.02099  val_rmse=14.209%
+[lstm/nasa] epoch  37  train_loss=0.02100  val_rmse=13.863%
+[lstm/nasa] epoch  38  train_loss=0.02041  val_rmse=15.078%
+[lstm/nasa] epoch  39  train_loss=0.02038  val_rmse=14.173%
+[lstm/nasa] epoch  40  train_loss=0.02026  val_rmse=13.948%
+[lstm/nasa] epoch  41  train_loss=0.02017  val_rmse=14.532%
+[lstm/nasa] epoch  42  train_loss=0.02058  val_rmse=13.771%
+[lstm/nasa] epoch  43  train_loss=0.02025  val_rmse=13.875%
+[lstm/nasa] epoch  44  train_loss=0.02003  val_rmse=13.826%
+[lstm/nasa] epoch  45  train_loss=0.02037  val_rmse=13.875%
+[lstm/nasa] epoch  46  train_loss=0.02030  val_rmse=13.771%
+[lstm/nasa] epoch  47  train_loss=0.02041  val_rmse=13.772%
+[lstm/nasa] epoch  48  train_loss=0.02199  val_rmse=14.525%
+[lstm/nasa] epoch  49  train_loss=0.02127  val_rmse=13.966%
+[lstm/nasa] epoch  50  train_loss=0.02084  val_rmse=14.670%
+[lstm/nasa] epoch  51  train_loss=0.02026  val_rmse=13.913%
+[lstm/nasa] epoch  52  train_loss=0.02006  val_rmse=13.952%
+[lstm/nasa] epoch  53  train_loss=0.01983  val_rmse=13.916%
+[lstm/nasa] epoch  54  train_loss=0.01977  val_rmse=14.404%
+[lstm/nasa] epoch  55  train_loss=0.01963  val_rmse=13.570%
+[lstm/nasa] epoch  56  train_loss=0.02072  val_rmse=14.058%
+[lstm/nasa] epoch  57  train_loss=0.02021  val_rmse=14.189%
+[lstm/nasa] epoch  58  train_loss=0.01994  val_rmse=13.778%
+[lstm/nasa] epoch  59  train_loss=0.01983  val_rmse=14.074%
+[lstm/nasa] epoch  60  train_loss=0.01958  val_rmse=13.632%
+[lstm/nasa] saved checkpoint -> C:\Users\shahs\battery_soc\results\checkpoints\lstm_nasa.pt
+[lstm/nasa] TEST metrics: {'rmse_pct': 15.960216522216797, 'mae_pct': 9.152942150831223, 'mape_pct': 2203.6767578125, 'max_error_pct': 99.8309850692749}
+
+>>> python -m src.train --model lstm --dataset oxford
+[lstm/oxford] epoch   1  train_loss=0.02124  val_rmse=2.244%
+[lstm/oxford] epoch   2  train_loss=0.00033  val_rmse=1.426%
+[lstm/oxford] epoch   3  train_loss=0.00020  val_rmse=1.125%
+[lstm/oxford] epoch   4  train_loss=0.00016  val_rmse=1.103%
+[lstm/oxford] epoch   5  train_loss=0.00014  val_rmse=0.906%
+[lstm/oxford] epoch   6  train_loss=0.00012  val_rmse=0.930%
+[lstm/oxford] epoch   7  train_loss=0.00012  val_rmse=0.856%
+[lstm/oxford] epoch   8  train_loss=0.00011  val_rmse=0.920%
+[lstm/oxford] epoch   9  train_loss=0.00011  val_rmse=0.948%
+[lstm/oxford] epoch  10  train_loss=0.00010  val_rmse=0.871%
+[lstm/oxford] epoch  11  train_loss=0.00010  val_rmse=0.802%
+[lstm/oxford] epoch  12  train_loss=0.00010  val_rmse=0.808%
+[lstm/oxford] epoch  13  train_loss=0.00010  val_rmse=0.795%
+[lstm/oxford] epoch  14  train_loss=0.00010  val_rmse=0.838%
+[lstm/oxford] epoch  15  train_loss=0.00010  val_rmse=0.773%
+[lstm/oxford] epoch  16  train_loss=0.00009  val_rmse=0.796%
+[lstm/oxford] epoch  17  train_loss=0.00010  val_rmse=0.831%
+[lstm/oxford] epoch  18  train_loss=0.00009  val_rmse=0.762%
+[lstm/oxford] epoch  19  train_loss=0.00009  val_rmse=0.761%
+[lstm/oxford] epoch  20  train_loss=0.00009  val_rmse=0.858%
+[lstm/oxford] epoch  21  train_loss=0.00009  val_rmse=0.863%
+[lstm/oxford] epoch  22  train_loss=0.00009  val_rmse=0.802%
+[lstm/oxford] epoch  23  train_loss=0.00009  val_rmse=0.842%
+[lstm/oxford] epoch  24  train_loss=0.00008  val_rmse=0.864%
+[lstm/oxford] epoch  25  train_loss=0.00009  val_rmse=0.766%
+[lstm/oxford] epoch  26  train_loss=0.00009  val_rmse=0.883%
+[lstm/oxford] epoch  27  train_loss=0.00009  val_rmse=0.756%
+[lstm/oxford] epoch  28  train_loss=0.00009  val_rmse=0.806%
+[lstm/oxford] epoch  29  train_loss=0.00008  val_rmse=0.797%
+[lstm/oxford] epoch  30  train_loss=0.00009  val_rmse=0.777%
+[lstm/oxford] epoch  31  train_loss=0.00009  val_rmse=0.735%
+[lstm/oxford] epoch  32  train_loss=0.00009  val_rmse=0.743%
+[lstm/oxford] epoch  33  train_loss=0.00008  val_rmse=0.770%
+[lstm/oxford] epoch  34  train_loss=0.00008  val_rmse=0.770%
+[lstm/oxford] epoch  35  train_loss=0.00009  val_rmse=0.827%
+[lstm/oxford] epoch  36  train_loss=0.00008  val_rmse=0.842%
+[lstm/oxford] epoch  37  train_loss=0.00008  val_rmse=0.733%
+[lstm/oxford] epoch  38  train_loss=0.00008  val_rmse=0.776%
+[lstm/oxford] epoch  39  train_loss=0.00009  val_rmse=0.878%
+[lstm/oxford] epoch  40  train_loss=0.00009  val_rmse=0.794%
+[lstm/oxford] epoch  41  train_loss=0.00008  val_rmse=0.794%
+[lstm/oxford] epoch  42  train_loss=0.00008  val_rmse=0.876%
+[lstm/oxford] epoch  43  train_loss=0.00009  val_rmse=0.790%
+[lstm/oxford] epoch  44  train_loss=0.00008  val_rmse=0.744%
+[lstm/oxford] epoch  45  train_loss=0.00008  val_rmse=0.727%
+[lstm/oxford] epoch  46  train_loss=0.00008  val_rmse=0.723%
+[lstm/oxford] epoch  47  train_loss=0.00008  val_rmse=0.830%
+[lstm/oxford] epoch  48  train_loss=0.00008  val_rmse=0.835%
+[lstm/oxford] epoch  49  train_loss=0.00008  val_rmse=0.735%
+[lstm/oxford] epoch  50  train_loss=0.00008  val_rmse=0.929%
+[lstm/oxford] epoch  51  train_loss=0.00008  val_rmse=0.807%
+[lstm/oxford] epoch  52  train_loss=0.00007  val_rmse=0.794%
+[lstm/oxford] epoch  53  train_loss=0.00008  val_rmse=0.751%
+[lstm/oxford] epoch  54  train_loss=0.00009  val_rmse=0.970%
+[lstm/oxford] epoch  55  train_loss=0.00008  val_rmse=0.823%
+[lstm/oxford] epoch  56  train_loss=0.00008  val_rmse=0.800%
+[lstm/oxford] early stopping at epoch 56 (best val_rmse=0.723%)
+[lstm/oxford] saved checkpoint -> C:\Users\shahs\battery_soc\results\checkpoints\lstm_oxford.pt
+[lstm/oxford] TEST metrics: {'rmse_pct': 0.8864874951541424, 'mae_pct': 0.6572424434125423, 'mape_pct': 3.5216867923736572, 'max_error_pct': 3.049832582473755}
+
+>>> python -m src.train --model lstm --dataset both
+[lstm/both] epoch   1  train_loss=0.03867  val_rmse=18.727%
+[lstm/both] epoch   2  train_loss=0.03294  val_rmse=18.283%
+[lstm/both] epoch   3  train_loss=0.02731  val_rmse=18.073%
+[lstm/both] epoch   4  train_loss=0.02603  val_rmse=15.037%
+[lstm/both] epoch   5  train_loss=0.02455  val_rmse=15.327%
+[lstm/both] epoch   6  train_loss=0.02470  val_rmse=14.877%
+[lstm/both] epoch   7  train_loss=0.02410  val_rmse=15.141%
+[lstm/both] epoch   8  train_loss=0.02344  val_rmse=14.996%
+[lstm/both] epoch   9  train_loss=0.02348  val_rmse=14.834%
+[lstm/both] epoch  10  train_loss=0.02353  val_rmse=14.549%
+[lstm/both] epoch  11  train_loss=0.02237  val_rmse=14.513%
+[lstm/both] epoch  12  train_loss=0.02246  val_rmse=14.387%
+[lstm/both] epoch  13  train_loss=0.02248  val_rmse=14.492%
+[lstm/both] epoch  14  train_loss=0.02216  val_rmse=14.508%
+[lstm/both] epoch  15  train_loss=0.02198  val_rmse=14.842%
+[lstm/both] epoch  16  train_loss=0.02189  val_rmse=14.143%
+[lstm/both] epoch  17  train_loss=0.02519  val_rmse=15.300%
+[lstm/both] epoch  18  train_loss=0.02361  val_rmse=14.788%
+[lstm/both] epoch  19  train_loss=0.02254  val_rmse=14.476%
+[lstm/both] epoch  20  train_loss=0.02235  val_rmse=14.288%
+[lstm/both] epoch  21  train_loss=0.02244  val_rmse=14.704%
+[lstm/both] epoch  22  train_loss=0.02221  val_rmse=15.110%
+[lstm/both] epoch  23  train_loss=0.02184  val_rmse=14.432%
+[lstm/both] epoch  24  train_loss=0.02188  val_rmse=14.003%
+[lstm/both] epoch  25  train_loss=0.02122  val_rmse=14.253%
+[lstm/both] epoch  26  train_loss=0.02138  val_rmse=14.178%
+[lstm/both] epoch  27  train_loss=0.02227  val_rmse=14.140%
+[lstm/both] epoch  28  train_loss=0.02059  val_rmse=13.951%
+[lstm/both] epoch  29  train_loss=0.02062  val_rmse=14.037%
+[lstm/both] epoch  30  train_loss=0.02026  val_rmse=13.991%
+[lstm/both] epoch  31  train_loss=0.02040  val_rmse=13.870%
+[lstm/both] epoch  32  train_loss=0.02065  val_rmse=13.844%
+[lstm/both] epoch  33  train_loss=0.02123  val_rmse=14.264%
+[lstm/both] epoch  34  train_loss=0.02102  val_rmse=13.792%
+[lstm/both] epoch  35  train_loss=0.02034  val_rmse=13.789%
+[lstm/both] epoch  36  train_loss=0.02069  val_rmse=14.021%
+[lstm/both] epoch  37  train_loss=0.02041  val_rmse=13.995%
+[lstm/both] epoch  38  train_loss=0.02044  val_rmse=14.645%
+[lstm/both] epoch  39  train_loss=0.02014  val_rmse=13.686%
+[lstm/both] epoch  40  train_loss=0.01970  val_rmse=13.789%
+[lstm/both] epoch  41  train_loss=0.01971  val_rmse=13.475%
+[lstm/both] epoch  42  train_loss=0.01986  val_rmse=14.463%
+[lstm/both] epoch  43  train_loss=0.01989  val_rmse=13.641%
+[lstm/both] epoch  44  train_loss=0.01965  val_rmse=13.650%
+[lstm/both] epoch  45  train_loss=0.02039  val_rmse=14.105%
+[lstm/both] epoch  46  train_loss=0.01969  val_rmse=13.678%
+[lstm/both] epoch  47  train_loss=0.01933  val_rmse=13.542%
+[lstm/both] epoch  48  train_loss=0.01947  val_rmse=13.852%
+[lstm/both] epoch  49  train_loss=0.01924  val_rmse=13.856%
+[lstm/both] epoch  50  train_loss=0.01907  val_rmse=13.688%
+[lstm/both] epoch  51  train_loss=0.01892  val_rmse=13.526%
+[lstm/both] early stopping at epoch 51 (best val_rmse=13.475%)
+[lstm/both] saved checkpoint -> C:\Users\shahs\battery_soc\results\checkpoints\lstm_both.pt
+[lstm/both] TEST metrics: {'rmse_pct': 14.738325774669647, 'mae_pct': 8.03145319223404, 'mape_pct': 1697.9732666015625, 'max_error_pct': 99.06604886054993}
+
+>>> python -m src.train --model cnn_unet --dataset nasa
+[cnn_unet/nasa] epoch   1  train_loss=0.03353  val_rmse=17.108%
+[cnn_unet/nasa] epoch   2  train_loss=0.03096  val_rmse=16.587%
+[cnn_unet/nasa] epoch   3  train_loss=0.02937  val_rmse=15.849%
+[cnn_unet/nasa] epoch   4  train_loss=0.02835  val_rmse=15.609%
+[cnn_unet/nasa] epoch   5  train_loss=0.02741  val_rmse=15.645%
+[cnn_unet/nasa] epoch   6  train_loss=0.02679  val_rmse=15.568%
+[cnn_unet/nasa] epoch   7  train_loss=0.02615  val_rmse=15.251%
+[cnn_unet/nasa] epoch   8  train_loss=0.02576  val_rmse=15.188%
+[cnn_unet/nasa] epoch   9  train_loss=0.02528  val_rmse=14.922%
+[cnn_unet/nasa] epoch  10  train_loss=0.02483  val_rmse=14.959%
+[cnn_unet/nasa] epoch  11  train_loss=0.02461  val_rmse=14.986%
+[cnn_unet/nasa] epoch  12  train_loss=0.02440  val_rmse=14.731%
+[cnn_unet/nasa] epoch  13  train_loss=0.02412  val_rmse=14.673%
+[cnn_unet/nasa] epoch  14  train_loss=0.02392  val_rmse=14.641%
+[cnn_unet/nasa] epoch  15  train_loss=0.02369  val_rmse=14.477%
+[cnn_unet/nasa] epoch  16  train_loss=0.02367  val_rmse=14.608%
+[cnn_unet/nasa] epoch  17  train_loss=0.02361  val_rmse=14.511%
+[cnn_unet/nasa] epoch  18  train_loss=0.02379  val_rmse=14.700%
+[cnn_unet/nasa] epoch  19  train_loss=0.02367  val_rmse=14.570%
+[cnn_unet/nasa] epoch  20  train_loss=0.02348  val_rmse=14.495%
+[cnn_unet/nasa] epoch  21  train_loss=0.02327  val_rmse=14.454%
+[cnn_unet/nasa] epoch  22  train_loss=0.02314  val_rmse=14.300%
+[cnn_unet/nasa] epoch  23  train_loss=0.02313  val_rmse=14.314%
+[cnn_unet/nasa] epoch  24  train_loss=0.02338  val_rmse=14.669%
+[cnn_unet/nasa] epoch  25  train_loss=0.02311  val_rmse=14.494%
+[cnn_unet/nasa] epoch  26  train_loss=0.02307  val_rmse=14.314%
+[cnn_unet/nasa] epoch  27  train_loss=0.02320  val_rmse=14.373%
+[cnn_unet/nasa] epoch  28  train_loss=0.02298  val_rmse=14.380%
+[cnn_unet/nasa] epoch  29  train_loss=0.02335  val_rmse=14.494%
+[cnn_unet/nasa] epoch  30  train_loss=0.02306  val_rmse=14.374%
+[cnn_unet/nasa] epoch  31  train_loss=0.02287  val_rmse=14.096%
+[cnn_unet/nasa] epoch  32  train_loss=0.02318  val_rmse=14.201%
+[cnn_unet/nasa] epoch  33  train_loss=0.02259  val_rmse=14.275%
+[cnn_unet/nasa] epoch  34  train_loss=0.02273  val_rmse=14.353%
+[cnn_unet/nasa] epoch  35  train_loss=0.02262  val_rmse=14.404%
+[cnn_unet/nasa] epoch  36  train_loss=0.02276  val_rmse=14.198%
+[cnn_unet/nasa] epoch  37  train_loss=0.02262  val_rmse=14.347%
+[cnn_unet/nasa] epoch  38  train_loss=0.02287  val_rmse=14.282%
+[cnn_unet/nasa] epoch  39  train_loss=0.02274  val_rmse=14.463%
+[cnn_unet/nasa] epoch  40  train_loss=0.02291  val_rmse=14.448%
+[cnn_unet/nasa] epoch  41  train_loss=0.02253  val_rmse=14.103%
+[cnn_unet/nasa] early stopping at epoch 41 (best val_rmse=14.096%)
+[cnn_unet/nasa] saved checkpoint -> C:\Users\shahs\battery_soc\results\checkpoints\cnn_unet_nasa.pt
+[cnn_unet/nasa] TEST metrics: {'rmse_pct': 15.333786606788635, 'mae_pct': 8.996516466140747, 'mape_pct': 1965.056396484375, 'max_error_pct': 96.22423648834229}
+
+>>> python -m src.train --model cnn_unet --dataset oxford
+[cnn_unet/oxford] epoch   1  train_loss=0.00614  val_rmse=2.589%
+[cnn_unet/oxford] epoch   2  train_loss=0.00214  val_rmse=2.107%
+[cnn_unet/oxford] epoch   3  train_loss=0.00217  val_rmse=1.833%
+[cnn_unet/oxford] epoch   4  train_loss=0.00206  val_rmse=1.593%
+[cnn_unet/oxford] epoch   5  train_loss=0.00157  val_rmse=1.493%
+[cnn_unet/oxford] epoch   6  train_loss=0.00141  val_rmse=1.148%
+[cnn_unet/oxford] epoch   7  train_loss=0.00225  val_rmse=1.631%
+[cnn_unet/oxford] epoch   8  train_loss=0.00166  val_rmse=1.766%
+[cnn_unet/oxford] epoch   9  train_loss=0.00160  val_rmse=1.511%
+[cnn_unet/oxford] epoch  10  train_loss=0.00163  val_rmse=1.492%
+[cnn_unet/oxford] epoch  11  train_loss=0.00116  val_rmse=1.277%
+[cnn_unet/oxford] epoch  12  train_loss=0.00141  val_rmse=1.499%
+[cnn_unet/oxford] epoch  13  train_loss=0.00160  val_rmse=2.130%
+[cnn_unet/oxford] epoch  14  train_loss=0.00129  val_rmse=1.326%
+[cnn_unet/oxford] epoch  15  train_loss=0.00166  val_rmse=1.216%
+[cnn_unet/oxford] epoch  16  train_loss=0.00122  val_rmse=1.423%
+[cnn_unet/oxford] early stopping at epoch 16 (best val_rmse=1.148%)
+[cnn_unet/oxford] saved checkpoint -> C:\Users\shahs\battery_soc\results\checkpoints\cnn_unet_oxford.pt
+[cnn_unet/oxford] TEST metrics: {'rmse_pct': 1.2059696950018406, 'mae_pct': 0.9864239953458309, 'mape_pct': 4.9319376945495605, 'max_error_pct': 4.3197184801101685}
+
+>>> python -m src.train --model cnn_unet --dataset both
+[cnn_unet/both] epoch   1  train_loss=0.03611  val_rmse=16.951%
+[cnn_unet/both] epoch   2  train_loss=0.03242  val_rmse=16.910%
+[cnn_unet/both] epoch   3  train_loss=0.03071  val_rmse=16.064%
+[cnn_unet/both] epoch   4  train_loss=0.02950  val_rmse=15.587%
+[cnn_unet/both] epoch   5  train_loss=0.02796  val_rmse=15.817%
+[cnn_unet/both] epoch   6  train_loss=0.02672  val_rmse=15.514%
+[cnn_unet/both] epoch   7  train_loss=0.02607  val_rmse=15.394%
+[cnn_unet/both] epoch   8  train_loss=0.02538  val_rmse=15.353%
+[cnn_unet/both] epoch   9  train_loss=0.02521  val_rmse=15.057%
+[cnn_unet/both] epoch  10  train_loss=0.02497  val_rmse=14.870%
+[cnn_unet/both] epoch  11  train_loss=0.02463  val_rmse=14.825%
+[cnn_unet/both] epoch  12  train_loss=0.02456  val_rmse=14.843%
+[cnn_unet/both] epoch  13  train_loss=0.02416  val_rmse=14.794%
+[cnn_unet/both] epoch  14  train_loss=0.02417  val_rmse=14.676%
+[cnn_unet/both] epoch  15  train_loss=0.02390  val_rmse=14.684%
+[cnn_unet/both] epoch  16  train_loss=0.02376  val_rmse=14.536%
+[cnn_unet/both] epoch  17  train_loss=0.02376  val_rmse=14.818%
+[cnn_unet/both] epoch  18  train_loss=0.02378  val_rmse=14.656%
+[cnn_unet/both] epoch  19  train_loss=0.02361  val_rmse=14.797%
+[cnn_unet/both] epoch  20  train_loss=0.02342  val_rmse=14.511%
+[cnn_unet/both] epoch  21  train_loss=0.02334  val_rmse=14.459%
+[cnn_unet/both] epoch  22  train_loss=0.02337  val_rmse=14.385%
+[cnn_unet/both] epoch  23  train_loss=0.02334  val_rmse=14.390%
+[cnn_unet/both] epoch  24  train_loss=0.02318  val_rmse=14.489%
+[cnn_unet/both] epoch  25  train_loss=0.02317  val_rmse=14.369%
+[cnn_unet/both] epoch  26  train_loss=0.02294  val_rmse=14.636%
+[cnn_unet/both] epoch  27  train_loss=0.02281  val_rmse=14.552%
+[cnn_unet/both] epoch  28  train_loss=0.02279  val_rmse=14.258%
+[cnn_unet/both] epoch  29  train_loss=0.02272  val_rmse=14.365%
+[cnn_unet/both] epoch  30  train_loss=0.02252  val_rmse=14.268%
+[cnn_unet/both] epoch  31  train_loss=0.02238  val_rmse=14.240%
+[cnn_unet/both] epoch  32  train_loss=0.02231  val_rmse=14.191%
+[cnn_unet/both] epoch  33  train_loss=0.02228  val_rmse=14.208%
+[cnn_unet/both] epoch  34  train_loss=0.02221  val_rmse=14.145%
+[cnn_unet/both] epoch  35  train_loss=0.02225  val_rmse=14.161%
+[cnn_unet/both] epoch  36  train_loss=0.02199  val_rmse=14.122%
+[cnn_unet/both] epoch  37  train_loss=0.02201  val_rmse=14.109%
+[cnn_unet/both] epoch  38  train_loss=0.02188  val_rmse=14.526%
+[cnn_unet/both] epoch  39  train_loss=0.02199  val_rmse=14.033%
+[cnn_unet/both] epoch  40  train_loss=0.02168  val_rmse=14.094%
+[cnn_unet/both] epoch  41  train_loss=0.02183  val_rmse=14.024%
+[cnn_unet/both] epoch  42  train_loss=0.02174  val_rmse=13.991%
+[cnn_unet/both] epoch  43  train_loss=0.02164  val_rmse=14.043%
+[cnn_unet/both] epoch  44  train_loss=0.02162  val_rmse=14.065%
+[cnn_unet/both] epoch  45  train_loss=0.02155  val_rmse=13.990%
+[cnn_unet/both] epoch  46  train_loss=0.02148  val_rmse=14.057%
+[cnn_unet/both] epoch  47  train_loss=0.02139  val_rmse=14.086%
+[cnn_unet/both] epoch  48  train_loss=0.02124  val_rmse=13.779%
+[cnn_unet/both] epoch  49  train_loss=0.02122  val_rmse=13.914%
+[cnn_unet/both] epoch  50  train_loss=0.02112  val_rmse=13.830%
+[cnn_unet/both] epoch  51  train_loss=0.02126  val_rmse=13.826%
+[cnn_unet/both] epoch  52  train_loss=0.02110  val_rmse=13.798%
+[cnn_unet/both] epoch  53  train_loss=0.02095  val_rmse=13.829%
+[cnn_unet/both] epoch  54  train_loss=0.02093  val_rmse=13.870%
+[cnn_unet/both] epoch  55  train_loss=0.02089  val_rmse=13.852%
+[cnn_unet/both] epoch  56  train_loss=0.02083  val_rmse=13.880%
+[cnn_unet/both] epoch  57  train_loss=0.02089  val_rmse=13.788%
+[cnn_unet/both] epoch  58  train_loss=0.02084  val_rmse=13.773%
+[cnn_unet/both] epoch  59  train_loss=0.02083  val_rmse=13.857%
+[cnn_unet/both] epoch  60  train_loss=0.02077  val_rmse=13.716%
+[cnn_unet/both] saved checkpoint -> C:\Users\shahs\battery_soc\results\checkpoints\cnn_unet_both.pt
+[cnn_unet/both] TEST metrics: {'rmse_pct': 14.630000293254852, 'mae_pct': 8.30444023013115, 'mape_pct': 1857.84130859375, 'max_error_pct': 98.30547571182251}
+
+>>> python -m src.train --model conv_ulsam_lstm --dataset nasa
+[conv_ulsam_lstm/nasa] epoch   1  train_loss=0.03444  val_rmse=16.915%
+[conv_ulsam_lstm/nasa] epoch   2  train_loss=0.02894  val_rmse=16.760%
+[conv_ulsam_lstm/nasa] epoch   3  train_loss=0.02673  val_rmse=15.421%
+[conv_ulsam_lstm/nasa] epoch   4  train_loss=0.02526  val_rmse=15.065%
+[conv_ulsam_lstm/nasa] epoch   5  train_loss=0.02434  val_rmse=15.053%
+[conv_ulsam_lstm/nasa] epoch   6  train_loss=0.02389  val_rmse=14.849%
+[conv_ulsam_lstm/nasa] epoch   7  train_loss=0.02351  val_rmse=14.919%
+[conv_ulsam_lstm/nasa] epoch   8  train_loss=0.02324  val_rmse=14.865%
+[conv_ulsam_lstm/nasa] epoch   9  train_loss=0.02306  val_rmse=14.459%
+[conv_ulsam_lstm/nasa] epoch  10  train_loss=0.02272  val_rmse=14.500%
+[conv_ulsam_lstm/nasa] epoch  11  train_loss=0.02244  val_rmse=14.357%
+[conv_ulsam_lstm/nasa] epoch  12  train_loss=0.02217  val_rmse=14.275%
+[conv_ulsam_lstm/nasa] epoch  13  train_loss=0.02203  val_rmse=14.278%
+[conv_ulsam_lstm/nasa] epoch  14  train_loss=0.02180  val_rmse=14.299%
+[conv_ulsam_lstm/nasa] epoch  15  train_loss=0.02160  val_rmse=14.164%
+[conv_ulsam_lstm/nasa] epoch  16  train_loss=0.02150  val_rmse=14.218%
+[conv_ulsam_lstm/nasa] epoch  17  train_loss=0.02138  val_rmse=14.358%
+[conv_ulsam_lstm/nasa] epoch  18  train_loss=0.02128  val_rmse=13.936%
+[conv_ulsam_lstm/nasa] epoch  19  train_loss=0.02109  val_rmse=14.312%
+[conv_ulsam_lstm/nasa] epoch  20  train_loss=0.02098  val_rmse=13.929%
+[conv_ulsam_lstm/nasa] epoch  21  train_loss=0.02091  val_rmse=13.852%
+[conv_ulsam_lstm/nasa] epoch  22  train_loss=0.02081  val_rmse=13.979%
+[conv_ulsam_lstm/nasa] epoch  23  train_loss=0.02070  val_rmse=13.953%
+[conv_ulsam_lstm/nasa] epoch  24  train_loss=0.02071  val_rmse=13.887%
+[conv_ulsam_lstm/nasa] epoch  25  train_loss=0.02050  val_rmse=13.909%
+[conv_ulsam_lstm/nasa] epoch  26  train_loss=0.02042  val_rmse=13.754%
+[conv_ulsam_lstm/nasa] epoch  27  train_loss=0.02041  val_rmse=13.809%
+[conv_ulsam_lstm/nasa] epoch  28  train_loss=0.02038  val_rmse=13.732%
+[conv_ulsam_lstm/nasa] epoch  29  train_loss=0.02018  val_rmse=13.810%
+[conv_ulsam_lstm/nasa] epoch  30  train_loss=0.02013  val_rmse=13.658%
+[conv_ulsam_lstm/nasa] epoch  31  train_loss=0.02012  val_rmse=13.819%
+[conv_ulsam_lstm/nasa] epoch  32  train_loss=0.02018  val_rmse=13.755%
+[conv_ulsam_lstm/nasa] epoch  33  train_loss=0.02017  val_rmse=13.639%
+[conv_ulsam_lstm/nasa] epoch  34  train_loss=0.01986  val_rmse=13.610%
+[conv_ulsam_lstm/nasa] epoch  35  train_loss=0.01974  val_rmse=13.482%
+[conv_ulsam_lstm/nasa] epoch  36  train_loss=0.01952  val_rmse=13.517%
+[conv_ulsam_lstm/nasa] epoch  37  train_loss=0.01934  val_rmse=13.369%
+[conv_ulsam_lstm/nasa] epoch  38  train_loss=0.01916  val_rmse=13.214%
+[conv_ulsam_lstm/nasa] epoch  39  train_loss=0.01889  val_rmse=13.517%
+[conv_ulsam_lstm/nasa] epoch  40  train_loss=0.01926  val_rmse=13.597%
+[conv_ulsam_lstm/nasa] epoch  41  train_loss=0.01934  val_rmse=13.430%
+[conv_ulsam_lstm/nasa] epoch  42  train_loss=0.01859  val_rmse=13.242%
+[conv_ulsam_lstm/nasa] epoch  43  train_loss=0.01817  val_rmse=13.059%
+[conv_ulsam_lstm/nasa] epoch  44  train_loss=0.01805  val_rmse=13.265%
+[conv_ulsam_lstm/nasa] epoch  45  train_loss=0.01781  val_rmse=12.819%
+[conv_ulsam_lstm/nasa] epoch  46  train_loss=0.01780  val_rmse=12.889%
+[conv_ulsam_lstm/nasa] epoch  47  train_loss=0.01801  val_rmse=12.772%
+[conv_ulsam_lstm/nasa] epoch  48  train_loss=0.01762  val_rmse=12.706%
+[conv_ulsam_lstm/nasa] epoch  49  train_loss=0.01751  val_rmse=12.725%
+[conv_ulsam_lstm/nasa] epoch  50  train_loss=0.01786  val_rmse=12.947%
+[conv_ulsam_lstm/nasa] epoch  51  train_loss=0.01770  val_rmse=12.797%
+[conv_ulsam_lstm/nasa] epoch  52  train_loss=0.01739  val_rmse=12.664%
+[conv_ulsam_lstm/nasa] epoch  53  train_loss=0.01711  val_rmse=12.738%
+[conv_ulsam_lstm/nasa] epoch  54  train_loss=0.01726  val_rmse=12.706%
+[conv_ulsam_lstm/nasa] epoch  55  train_loss=0.01709  val_rmse=12.569%
+[conv_ulsam_lstm/nasa] epoch  56  train_loss=0.01700  val_rmse=12.519%
+[conv_ulsam_lstm/nasa] epoch  57  train_loss=0.01713  val_rmse=12.621%
+[conv_ulsam_lstm/nasa] epoch  58  train_loss=0.01687  val_rmse=12.462%
+[conv_ulsam_lstm/nasa] epoch  59  train_loss=0.01688  val_rmse=12.655%
+[conv_ulsam_lstm/nasa] epoch  60  train_loss=0.01690  val_rmse=12.541%
+[conv_ulsam_lstm/nasa] saved checkpoint -> C:\Users\shahs\battery_soc\results\checkpoints\conv_ulsam_lstm_nasa.pt
+[conv_ulsam_lstm/nasa] TEST metrics: {'rmse_pct': 15.189182758331299, 'mae_pct': 8.850953727960587, 'mape_pct': 1885.9334716796875, 'max_error_pct': 98.72483015060425}
+
+>>> python -m src.train --model conv_ulsam_lstm --dataset oxford
+[conv_ulsam_lstm/oxford] epoch   1  train_loss=0.01344  val_rmse=2.435%
+[conv_ulsam_lstm/oxford] epoch   2  train_loss=0.00132  val_rmse=1.948%
+[conv_ulsam_lstm/oxford] epoch   3  train_loss=0.00106  val_rmse=1.527%
+[conv_ulsam_lstm/oxford] epoch   4  train_loss=0.00074  val_rmse=1.577%
+[conv_ulsam_lstm/oxford] epoch   5  train_loss=0.00050  val_rmse=1.509%
+[conv_ulsam_lstm/oxford] epoch   6  train_loss=0.00043  val_rmse=1.059%
+[conv_ulsam_lstm/oxford] epoch   7  train_loss=0.00024  val_rmse=0.989%
+[conv_ulsam_lstm/oxford] epoch   8  train_loss=0.00022  val_rmse=0.969%
+[conv_ulsam_lstm/oxford] epoch   9  train_loss=0.00018  val_rmse=1.057%
+[conv_ulsam_lstm/oxford] epoch  10  train_loss=0.00017  val_rmse=0.902%
+[conv_ulsam_lstm/oxford] epoch  11  train_loss=0.00014  val_rmse=0.940%
+[conv_ulsam_lstm/oxford] epoch  12  train_loss=0.00014  val_rmse=0.855%
+[conv_ulsam_lstm/oxford] epoch  13  train_loss=0.00012  val_rmse=0.819%
+[conv_ulsam_lstm/oxford] epoch  14  train_loss=0.00012  val_rmse=0.817%
+[conv_ulsam_lstm/oxford] epoch  15  train_loss=0.00012  val_rmse=0.856%
+[conv_ulsam_lstm/oxford] epoch  16  train_loss=0.00013  val_rmse=0.806%
+[conv_ulsam_lstm/oxford] epoch  17  train_loss=0.00011  val_rmse=0.764%
+[conv_ulsam_lstm/oxford] epoch  18  train_loss=0.00013  val_rmse=0.838%
+[conv_ulsam_lstm/oxford] epoch  19  train_loss=0.00011  val_rmse=0.825%
+[conv_ulsam_lstm/oxford] epoch  20  train_loss=0.00010  val_rmse=0.749%
+[conv_ulsam_lstm/oxford] epoch  21  train_loss=0.00010  val_rmse=0.864%
+[conv_ulsam_lstm/oxford] epoch  22  train_loss=0.00010  val_rmse=1.025%
+[conv_ulsam_lstm/oxford] epoch  23  train_loss=0.00010  val_rmse=0.769%
+[conv_ulsam_lstm/oxford] epoch  24  train_loss=0.00009  val_rmse=0.752%
+[conv_ulsam_lstm/oxford] epoch  25  train_loss=0.00010  val_rmse=0.723%
+[conv_ulsam_lstm/oxford] epoch  26  train_loss=0.00009  val_rmse=0.821%
+[conv_ulsam_lstm/oxford] epoch  27  train_loss=0.00009  val_rmse=0.772%
+[conv_ulsam_lstm/oxford] epoch  28  train_loss=0.00008  val_rmse=0.770%
+[conv_ulsam_lstm/oxford] epoch  29  train_loss=0.00008  val_rmse=0.734%
+[conv_ulsam_lstm/oxford] epoch  30  train_loss=0.00008  val_rmse=0.751%
+[conv_ulsam_lstm/oxford] epoch  31  train_loss=0.00008  val_rmse=0.737%
+[conv_ulsam_lstm/oxford] epoch  32  train_loss=0.00008  val_rmse=0.887%
+[conv_ulsam_lstm/oxford] epoch  33  train_loss=0.00009  val_rmse=0.752%
+[conv_ulsam_lstm/oxford] epoch  34  train_loss=0.00008  val_rmse=0.733%
+[conv_ulsam_lstm/oxford] epoch  35  train_loss=0.00008  val_rmse=0.749%
+[conv_ulsam_lstm/oxford] early stopping at epoch 35 (best val_rmse=0.723%)
+[conv_ulsam_lstm/oxford] saved checkpoint -> C:\Users\shahs\battery_soc\results\checkpoints\conv_ulsam_lstm_oxford.pt
+[conv_ulsam_lstm/oxford] TEST metrics: {'rmse_pct': 0.8688862435519695, 'mae_pct': 0.655828882008791, 'mape_pct': 3.599724292755127, 'max_error_pct': 2.990308403968811}
+
+>>> python -m src.train --model conv_ulsam_lstm --dataset both
+[conv_ulsam_lstm/both] epoch   1  train_loss=0.03642  val_rmse=17.856%
+[conv_ulsam_lstm/both] epoch   2  train_loss=0.03059  val_rmse=15.896%
+[conv_ulsam_lstm/both] epoch   3  train_loss=0.02801  val_rmse=15.349%
+[conv_ulsam_lstm/both] epoch   4  train_loss=0.02606  val_rmse=14.940%
+[conv_ulsam_lstm/both] epoch   5  train_loss=0.02488  val_rmse=14.655%
+[conv_ulsam_lstm/both] epoch   6  train_loss=0.02396  val_rmse=14.371%
+[conv_ulsam_lstm/both] epoch   7  train_loss=0.02323  val_rmse=14.366%
+[conv_ulsam_lstm/both] epoch   8  train_loss=0.02276  val_rmse=14.141%
+[conv_ulsam_lstm/both] epoch   9  train_loss=0.02236  val_rmse=14.027%
+[conv_ulsam_lstm/both] epoch  10  train_loss=0.02188  val_rmse=14.028%
+[conv_ulsam_lstm/both] epoch  11  train_loss=0.02158  val_rmse=13.975%
+[conv_ulsam_lstm/both] epoch  12  train_loss=0.02124  val_rmse=14.027%
+[conv_ulsam_lstm/both] epoch  13  train_loss=0.02151  val_rmse=13.688%
+[conv_ulsam_lstm/both] epoch  14  train_loss=0.02078  val_rmse=13.925%
+[conv_ulsam_lstm/both] epoch  15  train_loss=0.02059  val_rmse=13.857%
+[conv_ulsam_lstm/both] epoch  16  train_loss=0.02034  val_rmse=13.655%
+[conv_ulsam_lstm/both] epoch  17  train_loss=0.02027  val_rmse=13.764%
+[conv_ulsam_lstm/both] epoch  18  train_loss=0.02040  val_rmse=13.696%
+[conv_ulsam_lstm/both] epoch  19  train_loss=0.02002  val_rmse=13.646%
+[conv_ulsam_lstm/both] epoch  20  train_loss=0.01981  val_rmse=13.597%
+[conv_ulsam_lstm/both] epoch  21  train_loss=0.01973  val_rmse=13.519%
+[conv_ulsam_lstm/both] epoch  22  train_loss=0.01955  val_rmse=13.619%
+[conv_ulsam_lstm/both] epoch  23  train_loss=0.01955  val_rmse=13.505%
+[conv_ulsam_lstm/both] epoch  24  train_loss=0.01941  val_rmse=13.269%
+[conv_ulsam_lstm/both] epoch  25  train_loss=0.01912  val_rmse=13.377%
+[conv_ulsam_lstm/both] epoch  26  train_loss=0.01908  val_rmse=13.296%
+[conv_ulsam_lstm/both] epoch  27  train_loss=0.01893  val_rmse=13.399%
+[conv_ulsam_lstm/both] epoch  28  train_loss=0.01885  val_rmse=13.124%
+[conv_ulsam_lstm/both] epoch  29  train_loss=0.01853  val_rmse=12.974%
+[conv_ulsam_lstm/both] epoch  30  train_loss=0.01842  val_rmse=12.932%
+[conv_ulsam_lstm/both] epoch  31  train_loss=0.01820  val_rmse=12.880%
+[conv_ulsam_lstm/both] epoch  32  train_loss=0.01796  val_rmse=12.970%
+[conv_ulsam_lstm/both] epoch  33  train_loss=0.01772  val_rmse=12.776%
+[conv_ulsam_lstm/both] epoch  34  train_loss=0.01759  val_rmse=13.040%
+[conv_ulsam_lstm/both] epoch  35  train_loss=0.01755  val_rmse=12.768%
+[conv_ulsam_lstm/both] epoch  36  train_loss=0.01736  val_rmse=12.626%
+[conv_ulsam_lstm/both] epoch  37  train_loss=0.01712  val_rmse=12.768%
+[conv_ulsam_lstm/both] epoch  38  train_loss=0.01698  val_rmse=12.713%
+[conv_ulsam_lstm/both] epoch  39  train_loss=0.01694  val_rmse=12.744%
+[conv_ulsam_lstm/both] epoch  40  train_loss=0.01683  val_rmse=12.601%
+[conv_ulsam_lstm/both] epoch  41  train_loss=0.01674  val_rmse=13.071%
+[conv_ulsam_lstm/both] epoch  42  train_loss=0.01661  val_rmse=12.492%
+[conv_ulsam_lstm/both] epoch  43  train_loss=0.01678  val_rmse=12.735%
+[conv_ulsam_lstm/both] epoch  44  train_loss=0.01660  val_rmse=12.390%
+[conv_ulsam_lstm/both] epoch  45  train_loss=0.01657  val_rmse=12.351%
+[conv_ulsam_lstm/both] epoch  46  train_loss=0.01651  val_rmse=12.439%
+[conv_ulsam_lstm/both] epoch  47  train_loss=0.01644  val_rmse=12.417%
+[conv_ulsam_lstm/both] epoch  48  train_loss=0.01631  val_rmse=12.307%
+[conv_ulsam_lstm/both] epoch  49  train_loss=0.01624  val_rmse=12.629%
+[conv_ulsam_lstm/both] epoch  50  train_loss=0.01632  val_rmse=12.212%
+[conv_ulsam_lstm/both] epoch  51  train_loss=0.01624  val_rmse=12.455%
+[conv_ulsam_lstm/both] epoch  52  train_loss=0.01626  val_rmse=12.254%
+[conv_ulsam_lstm/both] epoch  53  train_loss=0.01600  val_rmse=12.311%
+[conv_ulsam_lstm/both] epoch  54  train_loss=0.01605  val_rmse=12.250%
+[conv_ulsam_lstm/both] epoch  55  train_loss=0.01590  val_rmse=12.114%
+[conv_ulsam_lstm/both] epoch  56  train_loss=0.01586  val_rmse=12.468%
+[conv_ulsam_lstm/both] epoch  57  train_loss=0.01589  val_rmse=12.191%
+[conv_ulsam_lstm/both] epoch  58  train_loss=0.01579  val_rmse=12.078%
+[conv_ulsam_lstm/both] epoch  59  train_loss=0.01585  val_rmse=12.103%
+[conv_ulsam_lstm/both] epoch  60  train_loss=0.01561  val_rmse=12.318%
+[conv_ulsam_lstm/both] saved checkpoint -> C:\Users\shahs\battery_soc\results\checkpoints\conv_ulsam_lstm_both.pt
+[conv_ulsam_lstm/both] TEST metrics: {'rmse_pct': 14.330944418907166, 'mae_pct': 7.940416783094406, 'mape_pct': 1353.9598388671875, 'max_error_pct': 97.83366918563843}
+
+>>> python -m src.train --model baseline_svr --dataset nasa
+[baseline_svr/nasa] subsampled train set 161209 -> 20000 rows for SVR
+[baseline_svr/nasa] fit in 49.3s
+[baseline_svr/nasa] TEST metrics: {'rmse_pct': 17.55357998751999, 'mae_pct': 9.127177396216663, 'mape_pct': 1102.2813258326, 'max_error_pct': 100.0}
+
+>>> python -m src.train --model baseline_svr --dataset oxford
+[baseline_svr/oxford] fit in 32.4s
+[baseline_svr/oxford] TEST metrics: {'rmse_pct': 1.2609480587083692, 'mae_pct': 0.8963430828480079, 'mape_pct': 5.021429082071899, 'max_error_pct': 5.389371648566038}
+
+>>> python -m src.train --model baseline_svr --dataset both
+[baseline_svr/both] subsampled train set 173182 -> 20000 rows for SVR
+[baseline_svr/both] fit in 47.3s
+[baseline_svr/both] TEST metrics: {'rmse_pct': 18.30038210999676, 'mae_pct': 9.939492601263163, 'mape_pct': 1220.6127348924854, 'max_error_pct': 100.0}
+
+>>> python -m src.train --model baseline_rf --dataset nasa
+[baseline_rf/nasa] fit in 54.7s
+[baseline_rf/nasa] TEST metrics: {'rmse_pct': 15.219822979473834, 'mae_pct': 7.787925390150556, 'mape_pct': 1772.1300718693105, 'max_error_pct': 99.99723522274675}
+
+>>> python -m src.train --model baseline_rf --dataset oxford
+[baseline_rf/oxford] fit in 3.9s
+[baseline_rf/oxford] TEST metrics: {'rmse_pct': 0.516211963222415, 'mae_pct': 0.2846154627074466, 'mape_pct': 1.0124358454471347, 'max_error_pct': 4.452055204470051}
+
+>>> python -m src.train --model baseline_rf --dataset both
+[baseline_rf/both] fit in 63.2s
+[baseline_rf/both] TEST metrics: {'rmse_pct': 14.105739188430244, 'mae_pct': 7.2593589526519775, 'mape_pct': 1662.7211873027381, 'max_error_pct': 99.87252858197147}
+
+=== Training conv_ulsam_sru_paper (short-window, matches Gong et al. 2022) on nasa_short/oxford_short ===
+
+>>> python -m src.train --model conv_ulsam_sru_paper --dataset nasa_short
+[conv_ulsam_sru_paper/nasa_short] epoch   1  train_loss=0.03816  val_rmse=18.132%
+[conv_ulsam_sru_paper/nasa_short] epoch   2  train_loss=0.03461  val_rmse=17.948%
+[conv_ulsam_sru_paper/nasa_short] epoch   3  train_loss=0.03370  val_rmse=17.854%
+[conv_ulsam_sru_paper/nasa_short] epoch   4  train_loss=0.03308  val_rmse=17.619%
+[conv_ulsam_sru_paper/nasa_short] epoch   5  train_loss=0.03261  val_rmse=17.522%
+[conv_ulsam_sru_paper/nasa_short] epoch   6  train_loss=0.03231  val_rmse=17.426%
+[conv_ulsam_sru_paper/nasa_short] epoch   7  train_loss=0.03192  val_rmse=17.468%
+[conv_ulsam_sru_paper/nasa_short] epoch   8  train_loss=0.03156  val_rmse=17.167%
+[conv_ulsam_sru_paper/nasa_short] epoch   9  train_loss=0.03088  val_rmse=17.192%
+[conv_ulsam_sru_paper/nasa_short] epoch  10  train_loss=0.03025  val_rmse=16.732%
+[conv_ulsam_sru_paper/nasa_short] epoch  11  train_loss=0.02953  val_rmse=16.677%
+[conv_ulsam_sru_paper/nasa_short] epoch  12  train_loss=0.02886  val_rmse=16.320%
+[conv_ulsam_sru_paper/nasa_short] epoch  13  train_loss=0.02805  val_rmse=16.165%
+[conv_ulsam_sru_paper/nasa_short] epoch  14  train_loss=0.02754  val_rmse=16.012%
+[conv_ulsam_sru_paper/nasa_short] epoch  15  train_loss=0.02730  val_rmse=15.925%
+[conv_ulsam_sru_paper/nasa_short] epoch  16  train_loss=0.02697  val_rmse=15.764%
+[conv_ulsam_sru_paper/nasa_short] epoch  17  train_loss=0.02672  val_rmse=15.743%
+[conv_ulsam_sru_paper/nasa_short] epoch  18  train_loss=0.02650  val_rmse=15.739%
+[conv_ulsam_sru_paper/nasa_short] epoch  19  train_loss=0.02643  val_rmse=15.731%
+[conv_ulsam_sru_paper/nasa_short] epoch  20  train_loss=0.02634  val_rmse=15.740%
+[conv_ulsam_sru_paper/nasa_short] epoch  21  train_loss=0.02627  val_rmse=15.610%
+[conv_ulsam_sru_paper/nasa_short] epoch  22  train_loss=0.02612  val_rmse=15.650%
+[conv_ulsam_sru_paper/nasa_short] epoch  23  train_loss=0.02601  val_rmse=15.477%
+[conv_ulsam_sru_paper/nasa_short] epoch  24  train_loss=0.02592  val_rmse=15.756%
+[conv_ulsam_sru_paper/nasa_short] epoch  25  train_loss=0.02589  val_rmse=15.441%
+[conv_ulsam_sru_paper/nasa_short] epoch  26  train_loss=0.02592  val_rmse=15.486%
+[conv_ulsam_sru_paper/nasa_short] epoch  27  train_loss=0.02572  val_rmse=15.425%
+[conv_ulsam_sru_paper/nasa_short] epoch  28  train_loss=0.02564  val_rmse=15.389%
+[conv_ulsam_sru_paper/nasa_short] epoch  29  train_loss=0.02568  val_rmse=15.355%
+[conv_ulsam_sru_paper/nasa_short] epoch  30  train_loss=0.02567  val_rmse=15.479%
+[conv_ulsam_sru_paper/nasa_short] epoch  31  train_loss=0.02542  val_rmse=15.903%
+[conv_ulsam_sru_paper/nasa_short] epoch  32  train_loss=0.02544  val_rmse=15.456%
+[conv_ulsam_sru_paper/nasa_short] epoch  33  train_loss=0.02545  val_rmse=15.338%
+[conv_ulsam_sru_paper/nasa_short] epoch  34  train_loss=0.02532  val_rmse=15.627%
+[conv_ulsam_sru_paper/nasa_short] epoch  35  train_loss=0.02527  val_rmse=15.290%
+[conv_ulsam_sru_paper/nasa_short] epoch  36  train_loss=0.02533  val_rmse=15.388%
+[conv_ulsam_sru_paper/nasa_short] epoch  37  train_loss=0.02521  val_rmse=15.273%
+[conv_ulsam_sru_paper/nasa_short] epoch  38  train_loss=0.02520  val_rmse=15.639%
+[conv_ulsam_sru_paper/nasa_short] epoch  39  train_loss=0.02528  val_rmse=15.356%
+[conv_ulsam_sru_paper/nasa_short] epoch  40  train_loss=0.02524  val_rmse=15.226%
+[conv_ulsam_sru_paper/nasa_short] epoch  41  train_loss=0.02520  val_rmse=15.274%
+[conv_ulsam_sru_paper/nasa_short] epoch  42  train_loss=0.02512  val_rmse=15.371%
+[conv_ulsam_sru_paper/nasa_short] epoch  43  train_loss=0.02515  val_rmse=15.242%
+[conv_ulsam_sru_paper/nasa_short] epoch  44  train_loss=0.02508  val_rmse=15.176%
+[conv_ulsam_sru_paper/nasa_short] epoch  45  train_loss=0.02506  val_rmse=15.277%
+[conv_ulsam_sru_paper/nasa_short] epoch  46  train_loss=0.02509  val_rmse=15.425%
+[conv_ulsam_sru_paper/nasa_short] epoch  47  train_loss=0.02499  val_rmse=15.150%
+[conv_ulsam_sru_paper/nasa_short] epoch  48  train_loss=0.02501  val_rmse=15.257%
+[conv_ulsam_sru_paper/nasa_short] epoch  49  train_loss=0.02501  val_rmse=15.261%
+[conv_ulsam_sru_paper/nasa_short] epoch  50  train_loss=0.02499  val_rmse=15.192%
+[conv_ulsam_sru_paper/nasa_short] epoch  51  train_loss=0.02492  val_rmse=15.235%
+[conv_ulsam_sru_paper/nasa_short] epoch  52  train_loss=0.02484  val_rmse=15.150%
+[conv_ulsam_sru_paper/nasa_short] epoch  53  train_loss=0.02486  val_rmse=15.558%
+[conv_ulsam_sru_paper/nasa_short] epoch  54  train_loss=0.02488  val_rmse=15.238%
+[conv_ulsam_sru_paper/nasa_short] epoch  55  train_loss=0.02486  val_rmse=15.254%
+[conv_ulsam_sru_paper/nasa_short] epoch  56  train_loss=0.02483  val_rmse=15.283%
+[conv_ulsam_sru_paper/nasa_short] epoch  57  train_loss=0.02482  val_rmse=15.092%
+[conv_ulsam_sru_paper/nasa_short] epoch  58  train_loss=0.02479  val_rmse=15.250%
+[conv_ulsam_sru_paper/nasa_short] epoch  59  train_loss=0.02486  val_rmse=15.179%
+[conv_ulsam_sru_paper/nasa_short] epoch  60  train_loss=0.02469  val_rmse=15.275%
+[conv_ulsam_sru_paper/nasa_short] saved checkpoint -> C:\Users\shahs\battery_soc\results\checkpoints\conv_ulsam_sru_paper_nasa_short.pt
+[conv_ulsam_sru_paper/nasa_short] TEST metrics: {'rmse_pct': 15.913145244121552, 'mae_pct': 9.373076260089874, 'mape_pct': 2216.90185546875, 'max_error_pct': 96.63896560668945}
+
+>>> python -m src.train --model conv_ulsam_sru_paper --dataset oxford_short
+[conv_ulsam_sru_paper/oxford_short] epoch   1  train_loss=0.02328  val_rmse=3.643%
+[conv_ulsam_sru_paper/oxford_short] epoch   2  train_loss=0.00226  val_rmse=2.868%
+[conv_ulsam_sru_paper/oxford_short] epoch   3  train_loss=0.00190  val_rmse=2.641%
+[conv_ulsam_sru_paper/oxford_short] epoch   4  train_loss=0.00168  val_rmse=2.432%
+[conv_ulsam_sru_paper/oxford_short] epoch   5  train_loss=0.00120  val_rmse=2.143%
+[conv_ulsam_sru_paper/oxford_short] epoch   6  train_loss=0.00113  val_rmse=2.149%
+[conv_ulsam_sru_paper/oxford_short] epoch   7  train_loss=0.00077  val_rmse=1.915%
+[conv_ulsam_sru_paper/oxford_short] epoch   8  train_loss=0.00064  val_rmse=1.622%
+[conv_ulsam_sru_paper/oxford_short] epoch   9  train_loss=0.00060  val_rmse=1.749%
+[conv_ulsam_sru_paper/oxford_short] epoch  10  train_loss=0.00045  val_rmse=1.550%
+[conv_ulsam_sru_paper/oxford_short] epoch  11  train_loss=0.00040  val_rmse=1.578%
+[conv_ulsam_sru_paper/oxford_short] epoch  12  train_loss=0.00032  val_rmse=1.546%
+[conv_ulsam_sru_paper/oxford_short] epoch  13  train_loss=0.00029  val_rmse=1.391%
+[conv_ulsam_sru_paper/oxford_short] epoch  14  train_loss=0.00028  val_rmse=1.330%
+[conv_ulsam_sru_paper/oxford_short] epoch  15  train_loss=0.00026  val_rmse=1.434%
+[conv_ulsam_sru_paper/oxford_short] epoch  16  train_loss=0.00029  val_rmse=1.328%
+[conv_ulsam_sru_paper/oxford_short] epoch  17  train_loss=0.00025  val_rmse=1.310%
+[conv_ulsam_sru_paper/oxford_short] epoch  18  train_loss=0.00022  val_rmse=1.340%
+[conv_ulsam_sru_paper/oxford_short] epoch  19  train_loss=0.00025  val_rmse=1.473%
+[conv_ulsam_sru_paper/oxford_short] epoch  20  train_loss=0.00024  val_rmse=1.231%
+[conv_ulsam_sru_paper/oxford_short] epoch  21  train_loss=0.00021  val_rmse=1.277%
+[conv_ulsam_sru_paper/oxford_short] epoch  22  train_loss=0.00024  val_rmse=1.268%
+[conv_ulsam_sru_paper/oxford_short] epoch  23  train_loss=0.00022  val_rmse=1.179%
+[conv_ulsam_sru_paper/oxford_short] epoch  24  train_loss=0.00019  val_rmse=1.208%
+[conv_ulsam_sru_paper/oxford_short] epoch  25  train_loss=0.00022  val_rmse=1.339%
+[conv_ulsam_sru_paper/oxford_short] epoch  26  train_loss=0.00021  val_rmse=1.207%
+[conv_ulsam_sru_paper/oxford_short] epoch  27  train_loss=0.00020  val_rmse=1.298%
+[conv_ulsam_sru_paper/oxford_short] epoch  28  train_loss=0.00021  val_rmse=1.193%
+[conv_ulsam_sru_paper/oxford_short] epoch  29  train_loss=0.00019  val_rmse=1.243%
+[conv_ulsam_sru_paper/oxford_short] epoch  30  train_loss=0.00018  val_rmse=1.224%
+[conv_ulsam_sru_paper/oxford_short] epoch  31  train_loss=0.00017  val_rmse=1.191%
+[conv_ulsam_sru_paper/oxford_short] epoch  32  train_loss=0.00018  val_rmse=1.156%
+[conv_ulsam_sru_paper/oxford_short] epoch  33  train_loss=0.00017  val_rmse=1.172%
+[conv_ulsam_sru_paper/oxford_short] epoch  34  train_loss=0.00019  val_rmse=1.108%
+[conv_ulsam_sru_paper/oxford_short] epoch  35  train_loss=0.00015  val_rmse=1.084%
+[conv_ulsam_sru_paper/oxford_short] epoch  36  train_loss=0.00018  val_rmse=1.078%
+[conv_ulsam_sru_paper/oxford_short] epoch  37  train_loss=0.00017  val_rmse=1.309%
+[conv_ulsam_sru_paper/oxford_short] epoch  38  train_loss=0.00017  val_rmse=1.183%
+[conv_ulsam_sru_paper/oxford_short] epoch  39  train_loss=0.00016  val_rmse=1.098%
+[conv_ulsam_sru_paper/oxford_short] epoch  40  train_loss=0.00015  val_rmse=1.327%
+[conv_ulsam_sru_paper/oxford_short] epoch  41  train_loss=0.00017  val_rmse=1.329%
+[conv_ulsam_sru_paper/oxford_short] epoch  42  train_loss=0.00017  val_rmse=1.216%
+[conv_ulsam_sru_paper/oxford_short] epoch  43  train_loss=0.00015  val_rmse=1.112%
+[conv_ulsam_sru_paper/oxford_short] epoch  44  train_loss=0.00017  val_rmse=1.083%
+[conv_ulsam_sru_paper/oxford_short] epoch  45  train_loss=0.00014  val_rmse=1.124%
+[conv_ulsam_sru_paper/oxford_short] epoch  46  train_loss=0.00014  val_rmse=1.071%
+[conv_ulsam_sru_paper/oxford_short] epoch  47  train_loss=0.00016  val_rmse=1.226%
+[conv_ulsam_sru_paper/oxford_short] epoch  48  train_loss=0.00014  val_rmse=1.062%
+[conv_ulsam_sru_paper/oxford_short] epoch  49  train_loss=0.00014  val_rmse=1.057%
+[conv_ulsam_sru_paper/oxford_short] epoch  50  train_loss=0.00015  val_rmse=1.190%
+[conv_ulsam_sru_paper/oxford_short] epoch  51  train_loss=0.00016  val_rmse=1.067%
+[conv_ulsam_sru_paper/oxford_short] epoch  52  train_loss=0.00014  val_rmse=1.187%
+[conv_ulsam_sru_paper/oxford_short] epoch  53  train_loss=0.00012  val_rmse=1.074%
+[conv_ulsam_sru_paper/oxford_short] epoch  54  train_loss=0.00015  val_rmse=1.133%
+[conv_ulsam_sru_paper/oxford_short] epoch  55  train_loss=0.00013  val_rmse=1.144%
+[conv_ulsam_sru_paper/oxford_short] epoch  56  train_loss=0.00014  val_rmse=1.029%
+[conv_ulsam_sru_paper/oxford_short] epoch  57  train_loss=0.00014  val_rmse=1.144%
+[conv_ulsam_sru_paper/oxford_short] epoch  58  train_loss=0.00017  val_rmse=1.136%
+[conv_ulsam_sru_paper/oxford_short] epoch  59  train_loss=0.00013  val_rmse=1.189%
+[conv_ulsam_sru_paper/oxford_short] epoch  60  train_loss=0.00013  val_rmse=1.104%
+[conv_ulsam_sru_paper/oxford_short] saved checkpoint -> C:\Users\shahs\battery_soc\results\checkpoints\conv_ulsam_sru_paper_oxford_short.pt
+[conv_ulsam_sru_paper/oxford_short] TEST metrics: {'rmse_pct': 0.9565195068717003, 'mae_pct': 0.7312484085559845, 'mape_pct': 11.765268325805664, 'max_error_pct': 3.426850587129593}
+
+=== Evaluating everything ===
+[lstm/nasa] {'rmse_pct': 15.96021655488284, 'mae_pct': 9.152942512661614, 'mape_pct': 2203.676702992195, 'max_error_pct': 99.8309850692749}
+[cnn_unet/nasa] {'rmse_pct': 15.334098660628406, 'mae_pct': 8.996489599115339, 'mape_pct': 1964.9697516542858, 'max_error_pct': 96.22423462569714}
+[conv_ulsam_lstm/nasa] {'rmse_pct': 15.195000630431545, 'mae_pct': 8.856182794986198, 'mape_pct': 1887.1358805397424, 'max_error_pct': 98.7209053710103}
+[baseline_svr/nasa] {'rmse_pct': 17.55357998751999, 'mae_pct': 9.127177396216663, 'mape_pct': 1102.2813258326, 'max_error_pct': 100.0}
+[baseline_rf/nasa] {'rmse_pct': 15.219822979473834, 'mae_pct': 7.787925390150556, 'mape_pct': 1772.1300718693105, 'max_error_pct': 99.99723522274674}
+[lstm_ukf/nasa] {'rmse_pct': 15.384170425919786, 'mae_pct': 8.707184978899734, 'mape_pct': 2127.4676528531027, 'max_error_pct': 97.81836503736942}
+[lstm/oxford] {'rmse_pct': 0.8864874170284703, 'mae_pct': 0.6572423680025163, 'mape_pct': 3.5216865773777, 'max_error_pct': 3.0498315384051677}
+[cnn_unet/oxford] {'rmse_pct': 1.2059679746414098, 'mae_pct': 0.986421732156521, 'mape_pct': 4.931936378845555, 'max_error_pct': 4.319717836812803}
+[conv_ulsam_lstm/oxford] {'rmse_pct': 0.868922066819936, 'mae_pct': 0.6557628975827022, 'mape_pct': 3.5995159828438608, 'max_error_pct': 2.9910104335277965}
+[baseline_svr/oxford] {'rmse_pct': 1.2609480587083692, 'mae_pct': 0.8963430828480079, 'mape_pct': 5.021429082071899, 'max_error_pct': 5.389371648566038}
+[baseline_rf/oxford] {'rmse_pct': 0.516211963222415, 'mae_pct': 0.2846154627074466, 'mape_pct': 1.012435845447135, 'max_error_pct': 4.452055204470051}
+[lstm_ukf/oxford] {'rmse_pct': 2.4950934670845566, 'mae_pct': 2.0658902479447896, 'mape_pct': 12.135008893076545, 'max_error_pct': 5.830615629025604}
+[lstm/both] {'rmse_pct': 14.738324969934045, 'mae_pct': 8.03145337777561, 'mape_pct': 1697.9731999783155, 'max_error_pct': 99.06604886054993}
+[cnn_unet/both] {'rmse_pct': 14.630004626652187, 'mae_pct': 8.304444210700023, 'mape_pct': 1857.8391749979573, 'max_error_pct': 98.30547384917736}
+[conv_ulsam_lstm/both] {'rmse_pct': 14.328877673379559, 'mae_pct': 7.9386602821936965, 'mape_pct': 1355.2696494707272, 'max_error_pct': 97.15114161372185}
+[baseline_svr/both] {'rmse_pct': 18.30038210999676, 'mae_pct': 9.939492601263163, 'mape_pct': 1220.6127348924854, 'max_error_pct': 100.0}
+[baseline_rf/both] {'rmse_pct': 14.105739188430242, 'mae_pct': 7.2593589526519775, 'mape_pct': 1662.7211873027384, 'max_error_pct': 99.87252858197147}
+[lstm_ukf/both] {'rmse_pct': 14.335166479260211, 'mae_pct': 7.962705698679584, 'mape_pct': 1605.9034142298592, 'max_error_pct': 93.732514763486}
+[conv_ulsam_sru_paper/nasa_short] {'rmse_pct': 15.913144830164896, 'mae_pct': 9.373076460345729, 'mape_pct': 2216.9020297512493, 'max_error_pct': 96.63896709680557}
+[conv_ulsam_sru_paper/oxford_short] {'rmse_pct': 0.9565195151170828, 'mae_pct': 0.7312483795537496, 'mape_pct': 11.765269001432616, 'max_error_pct': 3.426850383654699}
+[kalman] fitting ECM from Oxford training cells...
+[kalman] R0=0.0327 R1=0.0300 C1=2000.0
+[linear_kf/oxford/Cell7] {'rmse_pct': 4.32600816223568, 'mae_pct': 3.952572265189045, 'mape_pct': 14.149175527083798, 'max_error_pct': 6.613669756882013}
+[ekf/oxford/Cell7] {'rmse_pct': 1.688972810499989, 'mae_pct': 1.5121848654585859, 'mape_pct': 7.896989138340596, 'max_error_pct': 2.647074171554581}
+[ukf/oxford/Cell7] {'rmse_pct': 1.720788261709663, 'mae_pct': 1.5505347088745653, 'mape_pct': 7.892721248106131, 'max_error_pct': 2.6728921650170268}
+[linear_kf/oxford/Cell8] {'rmse_pct': 4.217060448846348, 'mae_pct': 3.8471900436281015, 'mape_pct': 13.894251811891657, 'max_error_pct': 6.479693241871198}
+[ekf/oxford/Cell8] {'rmse_pct': 1.6316387388606801, 'mae_pct': 1.4566499715180852, 'mape_pct': 8.3127250603513, 'max_error_pct': 2.593763707429914}
+[ukf/oxford/Cell8] {'rmse_pct': 1.6618405857134089, 'mae_pct': 1.4938951791724382, 'mape_pct': 8.294707720521266, 'max_error_pct': 2.618162809811031}
+
+saved 29 rows -> C:\Users\shahs\battery_soc\results\metrics.csv
+                      model          dataset  rmse_pct  mae_pct    mape_pct  max_error_pct
+                       lstm             nasa 15.960217 9.152943 2203.676703      99.830985
+                   cnn_unet             nasa 15.334099 8.996490 1964.969752      96.224235
+            conv_ulsam_lstm             nasa 15.195001 8.856183 1887.135881      98.720905
+               baseline_svr             nasa 17.553580 9.127177 1102.281326     100.000000
+                baseline_rf             nasa 15.219823 7.787925 1772.130072      99.997235
+                   lstm_ukf             nasa 15.384170 8.707185 2127.467653      97.818365
+lstm_raw_for_ukf_comparison             nasa 15.960217 9.152943 2203.676703      99.830985
+                       lstm           oxford  0.886487 0.657242    3.521687       3.049832
+                   cnn_unet           oxford  1.205968 0.986422    4.931936       4.319718
+            conv_ulsam_lstm           oxford  0.868922 0.655763    3.599516       2.991010
+               baseline_svr           oxford  1.260948 0.896343    5.021429       5.389372
+                baseline_rf           oxford  0.516212 0.284615    1.012436       4.452055
+                   lstm_ukf           oxford  2.495093 2.065890   12.135009       5.830616
+lstm_raw_for_ukf_comparison           oxford  0.886487 0.657242    3.521687       3.049832
+                       lstm             both 14.738325 8.031453 1697.973200      99.066049
+                   cnn_unet             both 14.630005 8.304444 1857.839175      98.305474
+            conv_ulsam_lstm             both 14.328878 7.938660 1355.269649      97.151142
+               baseline_svr             both 18.300382 9.939493 1220.612735     100.000000
+                baseline_rf             both 14.105739 7.259359 1662.721187      99.872529
+                   lstm_ukf             both 14.335166 7.962706 1605.903414      93.732515
+lstm_raw_for_ukf_comparison             both 14.738325 8.031453 1697.973200      99.066049
+       conv_ulsam_sru_paper       nasa_short 15.913145 9.373076 2216.902030      96.638967
+       conv_ulsam_sru_paper     oxford_short  0.956520 0.731248   11.765269       3.426850
+                  linear_kf oxford_ecm_Cell7  4.326008 3.952572   14.149176       6.613670
+                        ekf oxford_ecm_Cell7  1.688973 1.512185    7.896989       2.647074
+                        ukf oxford_ecm_Cell7  1.720788 1.550535    7.892721       2.672892
+                  linear_kf oxford_ecm_Cell8  4.217060 3.847190   13.894252       6.479693
+                        ekf oxford_ecm_Cell8  1.631639 1.456650    8.312725       2.593764
+                        ukf oxford_ecm_Cell8  1.661841 1.493895    8.294708       2.618163
+
+=== DONE ===

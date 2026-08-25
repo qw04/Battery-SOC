@@ -56,8 +56,12 @@ python -m src.train --model baseline_svr --dataset oxford
 python -m src.train --model baseline_rf --dataset oxford
 python -m src.train --model lstm --dataset oxford
 python -m src.train --model cnn_unet --dataset oxford
-python -m src.train --model conv_ulsam_sru --dataset oxford
+python -m src.train --model conv_ulsam_lstm --dataset oxford
 # repeat with --dataset nasa and --dataset both
+
+# faithful Gong et al. 2022 reproduction -- short window variant only
+python -m src.train --model conv_ulsam_sru_paper --dataset nasa_short
+python -m src.train --model conv_ulsam_sru_paper --dataset oxford_short
 ```
 
 Checkpoints land in `results/checkpoints/`. `lstm_ukf` isn't trained
@@ -85,7 +89,8 @@ only -- see below), and writes:
 | Direct LSTM | `src/models/lstm_direct.py` | §2.1 (Chemali et al. 2018) |
 | LSTM + UKF hybrid | `src/models/lstm_ukf.py` | §2.4 (Yang et al. 2020) |
 | CNN U-Net (symmetric padding + total-variation loss) | `src/models/cnn_unet.py` | §3.3 (Fan et al. 2022) |
-| Conv1D + ULSAM + SRU | `src/models/conv_ulsam_sru.py` | §3.2 (Gong et al. 2022) |
+| Conv1D + ULSAM + LSTM | `src/models/conv_ulsam_lstm.py` | §3.2-inspired (Gong et al. 2022), LSTM in place of their SRU |
+| Conv1D + ULSAM + SRU (faithful reproduction) | `src/models/conv_ulsam_sru_paper.py` | §3.2 (Gong et al. 2022), run on `nasa_short`/`oxford_short` |
 | Linear Kalman Filter | `src/kalman/linear_kf.py` | textbook baseline |
 | Extended Kalman Filter | `src/kalman/ekf.py` | classic SOC-ECM approach |
 | Unscented Kalman Filter | `src/kalman/ukf.py` | generic, reused by `lstm_ukf.py` |
@@ -160,8 +165,20 @@ sliding windows; the window's last timestep's SOC is the label
 
 | Dataset | dt | window length | stride | ≈ window span |
 |---|---|---|---|---|
-| NASA | 4s | 64 steps | 32 steps | 4.3 min |
-| Oxford | 20s | 64 steps | 8 steps | 21 min |
+| NASA | 1s (native) | 50 steps | 128 steps | 50s |
+| Oxford | 1s (native) | 50 steps | 160 steps | 50s |
+| NASA / Oxford ("short" variant) | 1s (native) | 10 steps | 128 / 160 steps | 10s |
+
+Both datasets are windowed over raw ~1Hz samples (no resampling/downsampling) --
+the 50-step window length matches the "50 lookback steps" convention used by
+USAL's dynamic-loading case study and the benchmark LSTM in NNGP
+(literature_review.md §2.6/§3.1). Stride differs between datasets only to keep
+window count (and training time) tractable given how much raw data one NASA
+cell contains (~150 days) vs. an Oxford characterization cycle (hours); each
+dataset's "short" variant reuses the same dt/stride as its standard variant, so
+window length is the only thing that changes between them. The short variant
+(`--dataset nasa_short` / `oxford_short`) exists to match Gong, Wang & Cheng
+(2022)'s own input-length ablation (§3.2) for `conv_ulsam_sru_paper.py`.
 
 Features are z-score normalized using statistics fit on the training split
 only (`src/data/windowing.py::normalize_features`); the same mean/std are
@@ -186,9 +203,14 @@ reused for val/test to avoid leakage.
   zero/reflect padding) on every conv, trained with `MSE + 0.1 × total
   variation loss` (mean |Δ| between consecutive predicted timesteps) to
   discourage a jumpy output trace.
-- **Conv+ULSAM+SRU** (`src/models/conv_ulsam_sru.py`): `Conv1d(3→32) → ULSAM
-  (4-subspace channel attention) → SRU (hidden 64, parallel input
-  projections + elementwise-only recurrence) → Linear(64→32→1)`.
+- **Conv+ULSAM+LSTM** (`src/models/conv_ulsam_lstm.py`): `Conv1d(3→32) → ULSAM
+  (4-subspace channel attention) → LSTM (hidden 64) → Linear(64→32→1)`.
+- **Conv+ULSAM+SRU** (`src/models/conv_ulsam_sru_paper.py`): faithful
+  reproduction of Gong, Wang & Cheng (2022)'s own architecture -- two conv
+  layers (3→10→20), a deeper residual ULSAM attention branch, and a real SRU
+  (not LSTM) run over the flattened channel×time feature map as one long
+  pseudo-sequence, per the paper's diagram. Paired with the short (10-step)
+  window variant to match the paper's own input-length ablation.
 
 ### Kalman filters / equivalent circuit model
 
@@ -224,54 +246,68 @@ are in `results/plots/`. Summary as of the last full run:
 
 | Model | RMSE % | MAE % |
 |---|---|---|
-| Random Forest | 14.39 | 7.21 |
-| Conv+ULSAM+SRU | 14.84 | 8.22 |
-| LSTM + UKF | 14.56 | 8.12 |
-| LSTM (direct) | 15.06 | 8.57 |
-| CNN U-Net | 15.10 | 8.67 |
-| SVR | 16.87 | 8.51 |
+| Conv+ULSAM+LSTM | 15.20 | 8.86 |
+| Random Forest | 15.22 | 7.79 |
+| CNN U-Net | 15.33 | 9.00 |
+| LSTM + UKF | 15.38 | 8.71 |
+| LSTM (direct) | 15.96 | 9.15 |
+| SVR | 17.55 | 9.13 |
 
 **Oxford (leave-cell-out: train 6 cells, test Cell7/Cell8) -- SOC RMSE, %**
 
 | Model | RMSE % | MAE % |
 |---|---|---|
-| Random Forest | 0.41 | 0.28 |
-| SVR | 0.56 | 0.40 |
-| LSTM (direct) | 0.62 | 0.50 |
-| Conv+ULSAM+SRU | 0.71 | 0.57 |
-| CNN U-Net | 0.75 | 0.61 |
-| LSTM + UKF | 1.84 | 1.51 |
-| UKF (ECM, no NN) | 1.66-1.72 | 1.46-1.55 |
+| Random Forest | 0.52 | 0.28 |
+| Conv+ULSAM+LSTM | 0.87 | 0.66 |
+| LSTM (direct) | 0.89 | 0.66 |
+| CNN U-Net | 1.21 | 0.99 |
+| SVR | 1.26 | 0.90 |
 | EKF (ECM, no NN) | 1.63-1.69 | 1.46-1.51 |
+| UKF (ECM, no NN) | 1.66-1.72 | 1.49-1.55 |
+| LSTM + UKF | 2.50 | 2.07 |
 | Linear KF (ECM, no NN) | 4.22-4.33 | 3.85-3.95 |
 
-**Both (pooled train, evaluated on both test sets)** lands in between, close
-to NASA's numbers (~14.1-16.4% RMSE) since NASA's test set is ~17x larger
-than Oxford's and dominates the pooled metric.
+**Both (pooled train, evaluated on both test sets)** lands close to NASA's
+numbers (14.1-18.3% RMSE) since NASA's test set is ~11x larger than Oxford's
+and dominates the pooled metric. Ranking is consistent with the NASA table:
+Random Forest and Conv+ULSAM+LSTM lead, SVR trails.
+
+**Short window variant (window=10, matching Gong et al. 2022's own ablation)**
+
+| Model / dataset | RMSE % | MAE % |
+|---|---|---|
+| Conv+ULSAM+SRU (faithful) / oxford_short | 0.96 | 0.73 |
+| Conv+ULSAM+SRU (faithful) / nasa_short | 15.91 | 9.37 |
 
 **Reading these results:**
 - **Oxford is easy, NASA is hard.** Oxford's windows come from clean
   constant-current characterization cycles; NASA's come from a genuinely
   randomized, bidirectional current profile on a cell the model never saw
-  during training. The ~20-25x gap in RMSE between the two datasets reflects
-  that difficulty gap, not a difference in model quality -- every model's
-  *relative ranking* is fairly consistent across both datasets.
+  during training. The gap in RMSE between the two datasets ranges from
+  ~13x to ~30x depending on the model, not a difference in model quality --
+  every model's *relative ranking* is fairly consistent across both datasets.
 - **The classical Kalman filters (EKF/UKF) clearly beat the plain linear KF**
-  on Oxford (~1.7% vs ~4.3% RMSE) -- exactly the result the literature would
-  predict, since linearizing the nonlinear OCV(SOC) curve only once (linear
-  KF) loses much more information than relinearizing every step (EKF) or
-  using sigma points (UKF).
+  on Oxford (~1.6-1.7% vs ~4.2-4.3% RMSE) -- exactly the result the literature
+  would predict, since linearizing the nonlinear OCV(SOC) curve only once
+  (linear KF) loses much more information than relinearizing every step (EKF)
+  or using sigma points (UKF).
 - **LSTM+UKF's effect flips between datasets.** On Oxford, where the raw LSTM
-  is already very accurate (0.62% RMSE), fusing it with a fixed-capacity
-  coulomb-counting prior *hurts* (1.84%) -- degradation across Oxford's many
+  is already very accurate (0.89% RMSE), fusing it with a fixed-capacity
+  coulomb-counting prior *hurts* (2.50%) -- degradation across Oxford's many
   checkpoints means the fixed nominal capacity used by the process model is
   measurably wrong for aged cells, and there's little LSTM noise left to
   usefully filter out anyway. On NASA, where the raw LSTM is much noisier
-  (15.06%), the same fusion *helps* (14.56%) -- there's real noise for the
-  UKF to smooth out, and capacity drift matters less over NASA's shorter,
-  more tightly-anchored windows. This matches the general Kalman-filtering
-  principle: fusion only helps when the "sensor" (here, the LSTM) is
-  imperfect enough that a physics prior adds real information.
+  (15.96%), the same fusion *helps slightly* (15.38%) -- there's real noise
+  for the UKF to smooth out, and capacity drift matters less over NASA's
+  shorter, more tightly-anchored windows. This matches the general
+  Kalman-filtering principle: fusion only helps when the "sensor" (here, the
+  LSTM) is imperfect enough that a physics prior adds real information.
+- **The real SRU (short window) holds its own against the LSTM variant
+  (standard window) on Oxford** -- 0.96% vs. 0.87% RMSE -- despite using a
+  5x shorter context window (10 steps vs. 50) and the original paper's less
+  GPU-friendly recurrence. On NASA the two are also close (15.91% vs. 15.20%),
+  suggesting window length matters less than architecture for this task, at
+  least in the 10-50 step range tested here.
 
 ## Scoping notes / known simplifications
 

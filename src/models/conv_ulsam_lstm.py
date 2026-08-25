@@ -1,16 +1,13 @@
-"""Conv1D -> ULSAM -> SRU -> Dense, per Gong, Wang & Cheng 2022
-(literature_review.md §3.2), trained/evaluated on the NASA + Oxford datasets
-just like the original paper.
+"""Conv1D -> ULSAM -> LSTM -> Dense, a variant on Gong, Wang & Cheng 2022's
+architecture (literature_review.md §3.2) with an LSTM in place of their SRU.
+The `SRU` class below is kept only because conv_ulsam_sru_paper.py imports it
+for its own faithful reproduction of the original paper.
 
 - ULSAM (Ultra-Lightweight Subspace Attention Module): splits the conv
   feature channels into groups ("subspaces"), learns a small per-group
   attention map over the sequence position, and reweights each group by it --
   cheap channel/position attention with far fewer parameters than full
   self-attention. Originally proposed for 2D CNNs; adapted here to 1D signals.
-- SRU (Simple Recurrent Unit): all the heavy input projections (x_tilde/f/r)
-  are computed as one parallel matmul over the whole sequence; only a cheap
-  elementwise recurrence remains inside the time loop, making it much faster
-  to train than an LSTM/GRU while keeping sequence memory.
 """
 from __future__ import annotations
 
@@ -69,15 +66,15 @@ class SRU(nn.Module):
         return h
 
 
-class ConvULSAMSRU(nn.Module):
-    def __init__(self, n_features: int = 3, conv_channels: int = 32, sru_hidden: int = 64, num_subspaces: int = 4):
+class ConvULSAMLSTM(nn.Module):
+    def __init__(self, n_features: int = 3, conv_channels: int = 32, hidden_size: int = 64, num_subspaces: int = 4, num_layers: int = 1):
         super().__init__()
         self.conv = nn.Conv1d(n_features, conv_channels, kernel_size=5, padding=2)
         self.bn = nn.BatchNorm1d(conv_channels)
         self.ulsam = ULSAM1d(conv_channels, num_subspaces=num_subspaces)
-        self.sru = SRU(conv_channels, sru_hidden)
+        self.lstm = nn.LSTM(conv_channels, hidden_size, num_layers=num_layers, batch_first=True)
         self.head = nn.Sequential(
-            nn.Linear(sru_hidden, 32),
+            nn.Linear(hidden_size, 32),
             nn.ReLU(),
             nn.Linear(32, 1),
         )
@@ -88,7 +85,7 @@ class ConvULSAMSRU(nn.Module):
         x = torch.relu(self.bn(self.conv(x)))
         x = self.ulsam(x)                    # (B, C, L)
         x = x.transpose(1, 2)                # (B, L, C)
-        h = self.sru(x)                      # (B, L, H)
-        last = h[:, -1, :]
+        out, _ = self.lstm(x)                # (B, L, H)
+        last = out[:, -1, :]
         soc = torch.sigmoid(self.head(last)).squeeze(-1)
         return soc

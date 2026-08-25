@@ -23,7 +23,7 @@ from src.data import preprocess
 from src.data.dataset import load_npz
 from src.models.baseline import BaselineRegressor  # noqa: F401 (needed to unpickle)
 from src.models.cnn_unet import CNNUNet
-from src.models.conv_ulsam_sru import ConvULSAMSRU
+from src.models.conv_ulsam_lstm import ConvULSAMLSTM
 from src.models.lstm_direct import LSTMDirect
 from src.models.lstm_ukf import filter_sequence, lstm_predict
 from src.train import BASELINE_MODELS, CKPT_DIR, NEURAL_MODELS
@@ -217,7 +217,7 @@ if __name__ == "__main__":
     parser.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = parser.parse_args()
 
-    for dataset in ("nasa", "oxford", "both"):
+    for dataset in ("nasa", "oxford", "both", "nasa_short", "oxford_short"):
         for model_name in NEURAL_MODELS:
             evaluate_neural(model_name, dataset, args.device)
         for model_key in BASELINE_MODELS:

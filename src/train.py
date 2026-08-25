@@ -5,7 +5,7 @@ Usage:
   python -m src.train --model baseline_rf --dataset oxford
   python -m src.train --model lstm --dataset nasa
   python -m src.train --model cnn_unet --dataset both
-  python -m src.train --model conv_ulsam_sru --dataset nasa
+  python -m src.train --model conv_ulsam_lstm --dataset nasa
 
 Note: "lstm_ukf" is not trained here -- it reuses a checkpoint already trained
 via `--model lstm` and wraps it with the UKF at evaluation time (see
@@ -25,7 +25,8 @@ import torch.nn as nn
 from src.data.dataset import get_combined_dataloaders, get_dataloaders, load_npz
 from src.models.baseline import BaselineRegressor
 from src.models.cnn_unet import CNNUNet, total_variation_loss
-from src.models.conv_ulsam_sru import ConvULSAMSRU
+from src.models.conv_ulsam_lstm import ConvULSAMLSTM
+from src.models.conv_ulsam_sru_paper import ConvULSAMSRUPaper
 from src.models.lstm_direct import LSTMDirect
 from src.utils.metrics import all_metrics
 from src.utils.seed import set_seed
@@ -36,7 +37,8 @@ CKPT_DIR = RESULTS_DIR / "checkpoints"
 NEURAL_MODELS = {
     "lstm": lambda: LSTMDirect(),
     "cnn_unet": lambda: CNNUNet(),
-    "conv_ulsam_sru": lambda: ConvULSAMSRU(),
+    "conv_ulsam_lstm": lambda: ConvULSAMLSTM(),
+    "conv_ulsam_sru_paper": lambda: ConvULSAMSRUPaper(),
 }
 BASELINE_MODELS = {
     "baseline_svr": "svr",
@@ -160,7 +162,7 @@ def _combine_npz():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", required=True, choices=list(NEURAL_MODELS) + list(BASELINE_MODELS))
-    parser.add_argument("--dataset", required=True, choices=["nasa", "oxford", "both"])
+    parser.add_argument("--dataset", required=True, choices=["nasa", "oxford", "both", "nasa_short", "oxford_short"])
     parser.add_argument("--epochs", type=int, default=60)
     parser.add_argument("--lr", type=float, default=1e-3)
     parser.add_argument("--batch-size", type=int, default=128)

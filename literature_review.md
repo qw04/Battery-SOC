@@ -2,8 +2,6 @@
 
 Compiled from handwritten research notes. 16 papers identified (2013–2024), spanning classical ML, RNN/LSTM, and CNN/hybrid Kalman-filter approaches to State-of-Charge (SOC) estimation. Goal: use this to select methods + a dataset for a Python implementation.
 
-> **Confidence flags**: papers marked *(medium)* had some detail (usually the exact dataset) that couldn't be verified against paywalled full text — architecture/algorithm claims are still high-confidence, cross-checked across sources.
-
 ---
 
 ## 1. Classical ML (SVM / ELM / RF / GPR)
@@ -19,8 +17,8 @@ Compiled from handwritten research notes. 16 papers identified (2013–2024), sp
 - **Authors**: Gozde O. Sahinoglu, Milutin Pajovic, Zafer Sahinoglu, Yebin Wang, Philip V. Orlik, Toshihiro Wada (Mitsubishi Electric Research Labs)
 - **Venue**: IEEE Transactions on Industrial Electronics, 65(5), 4311–4321
 - **Link**: [IEEE Xplore](https://ieeexplore.ieee.org/document/8074792/) · [MERL technical report](https://www.merl.com/publications/docs/TR2017-124.pdf)
-- **Dataset**: *(medium confidence)* Internally collected Li-ion cell data.
-- **What's new**: Proposes two variants — "regular" GPR (V/I/T as inputs) and "recurrent" GPR (feeds the previous SOC estimate back into the input vector). Unlike SVM/NN point estimates, GPR is Bayesian/non-parametric and natively outputs **uncertainty bounds** alongside the SOC estimate, useful for reliability-aware BMS design.
+- **Dataset**: Three datasets, not one: (1) a **simulated** ECM (two-RC + series-resistance) dataset; (2) an **in-house** Mitsubishi Electric LiMn₂O₄/hard-carbon cell (4.93 Ah), constant 10 C-rate/h charge-discharge; (3) the **CALCE INR 18650-20R** public dataset (2 Ah, NMC/graphite) under FUDS/US06 dynamic driving — the same public cell used for validation in §3.1 (NNGP) below.
+- **What's new**: Proposes two variants — "regular" GPR (V/I/T as inputs) and "recurrent" GPR (feeds the previous SOC estimate back into the input vector), plus an "autoregressive recurrent" GPR variant that also uses past V/I/T. Unlike SVM/NN point estimates, GPR is Bayesian/non-parametric and natively outputs **uncertainty bounds** alongside the SOC estimate, useful for reliability-aware BMS design. Best result: RMSE < 0.14%, MAE < 0.36% on the dynamic (FUDS/US06) test.
 
 ### 1.3 Extreme Learning Machine for SOC Estimation of Lithium-ion Battery Using GSA (2018)
 - **Authors**: M.S.H. Lipu, M.A. Hannan, A. Hussain, M.H. Saad
@@ -40,7 +38,7 @@ Compiled from handwritten research notes. 16 papers identified (2013–2024), sp
 - **Authors**: B. Liu, H. Wang, M.-L. Tseng, Z. Li
 - **Venue**: Journal of Energy Storage, 55, 105830
 - **Link**: [DOI 10.1016/j.est.2022.105830](https://www.sciencedirect.com/science/article/abs/pii/S2352152X22018187)
-- **Dataset**: *(medium confidence — not independently verified)*
+- **Dataset**: In-house 18650 ternary lithium-ion (NMC) cell, 2000 mAh rated / 3.7 V nominal (4.2 V charge cutoff, 2.5 V discharge cutoff). 32,851 samples at 1 Hz, ~24°C ambient, working-condition (not a standard drive-cycle) profile; randomly shuffled 50/50 train/test split. **Not a public dataset.**
 - **What's new**: Introduces an **Improved Barnacle Mating Optimizer (IBMO)** — enhances the base Barnacles Mating Optimizer metaheuristic with cubic chaotic mapping, a hyperbolic-sinusoidal conditioning factor, and Gauss-Cauchy mutation — then uses IBMO to tune SVM hyperparameters. Reports RMSE 0.0042, MAPE 0.61%, R²=0.9994, beating plain BMO-SVM.
 
 ### 1.6 Real-Time SOC Estimation Using Optimized Random Forest Regression Algorithm (2023)
@@ -83,18 +81,19 @@ Compiled from handwritten research notes. 16 papers identified (2013–2024), sp
 - **What's new**: Unlike 2.1–2.3 (which drop Kalman filtering entirely), this hybridizes it back in: the LSTM serves as the **measurement equation inside an Unscented Kalman Filter**, so UKF's recursive filtering cleans up LSTM output noise. Achieves RMSE < 1.1% across a wide temperature range — a good comparison point for "pure NN vs. NN+KF hybrid."
 
 ### 2.5 State of Charge Estimation Based on Temporal Convolutional Network and Transfer Learning (2021)
-- **Authors**: Y. Liu et al. *(full author list unconfirmed — verify on IEEE Xplore)*
+- **Authors**: Yuefeng Liu, Jiaqi Li, Gong Zhang, Bin Hua, Neal N. Xiong
 - **Venue**: IEEE Access, 9, 34177–34187
-- **Link**: [IEEE Xplore](https://ieeexplore.ieee.org/document/9348917/)
-- **Dataset**: *(medium confidence)* V/I/T under multiple working conditions, dataset name unconfirmed.
-- **What's new**: Uses a **Temporal Convolutional Network** (causal convolutions + zero-padding, so no lookahead leakage) instead of a recurrent architecture, direct-mapping V/I/T to SOC. Adds **transfer learning** so a model trained on one cell/condition can be fine-tuned to a new cell/condition with far less data — directly relevant to your dataset-selection question, since it addresses cross-dataset generalization.
+- **Link**: [IEEE Xplore](https://ieeexplore.ieee.org/document/9348917/) · [DOI 10.1109/ACCESS.2021.3057371](https://doi.org/10.1109/ACCESS.2021.3057371)
+- **Dataset**: **Panasonic 18650PF** (NCA) cell — the public Kollmeyer/Mendeley dataset (DOI [10.17632/WYKHT8Y7TG.1](https://doi.org/10.17632/wykht8y7tg.1)). Nine drive cycles (US06, HWFET, UDDS, LA92, 4 hybrid mixes, 1 custom "Cycle NN") at 25°C/10°C/0°C. Transfer-learning target is also public: **Turnigy Graphene 5000mAh 65C** cell (Kollmeyer/Mendeley, DOI [10.17632/4FX8CJPRXM.1](https://doi.org/10.17632/4fx8cjprxm.1)).
+- **What's new**: Uses a **Temporal Convolutional Network** (causal + dilated convolutions, no lookahead leakage) instead of a recurrent architecture, direct-mapping V/I/T to SOC. Adds **transfer learning** so a model trained on one cell/condition can be fine-tuned to a new cell/condition with far less data — directly relevant to your dataset-selection question, since it addresses cross-dataset generalization. Average MAE 0.67% across all tests; TCN beats LSTM-RNN and GRU-RNN baselines on the same data.
+- *Note: `09348917.pdf` in your Downloads is a duplicate of this same paper (same DOI/authors), not a distinct one.*
 
 ### 2.6 Uncorrelated Sparse Autoencoder with LSTM for SOC Estimation in Li-ion Battery Cells (2024)
 - **Authors**: Mayuresh Savargaonkar, Isaiah Oyewole, Abdallah Chehade, Ala A. Hussein
 - **Venue**: IEEE Transactions on Automation Science and Engineering, 21, 15–26
 - **Link**: [IEEE Xplore](https://ieeexplore.ieee.org/document/9959882/)
-- **Dataset**: *(medium confidence)* Li-ion cell charge/discharge cycling data.
-- **What's new**: "USAL" — a sparse autoencoder with an explicit **decorrelation penalty** (fights multicollinearity in the latent space), trained jointly with an LSTM in a multi-task setup. Learns compact, non-redundant, SOC-informative encodings while capturing long/short-term temporal correlation — aimed at long-horizon SOC estimation from limited initial cycling history. Most recent/most complex paper in the set.
+- **Dataset**: Same three public accelerated-aging datasets as §3.1 (same author group): **NASA Ames** (Cell-B0005 for tuning, Cell-B0007 for test); **Severson et al.** fast-charging set (124 LFP/Graphite A123 APR18650M1A cells — Cell-11, Cell-77 used); **Diao et al.** set (192 cells, full-factorial aging design — Cell-137 used). Plus a fourth public dataset for the dynamic-loading validation: the **CALCE INR 18650-20R** (2 Ah, NMC/graphite) set under US06/FUDS/DST/BJDST — the same CALCE dataset confirmed in §1.2 and §3.1.
+- **What's new**: "USAL" — a sparse autoencoder with an explicit **decorrelation penalty** (fights multicollinearity in the latent space), trained jointly with an LSTM in a multi-task setup. Learns compact, non-redundant, SOC-informative encodings while capturing long/short-term temporal correlation — aimed at long-horizon SOC estimation from limited initial cycling history (trained on only the first 5 charge-discharge cycles, tested on the final 20 near end-of-life). Outperforms DNN, plain LSTM, and a prior Autoencoder-LSTM baseline; e.g. MAE 0.88% vs. 2.1% for Autoencod-LSTM on Cell-77. Most recent/most complex paper in the set.
 
 ---
 
@@ -104,8 +103,8 @@ Compiled from handwritten research notes. 16 papers identified (2013–2024), sp
 - **Authors**: Mayuresh Savargaonkar, Abdallah A. Chehade, Ala A. Hussein
 - **Venue**: IEEE Transactions on Industry Applications, 2022
 - **Link**: [DOI 10.1109/TIA.2022.3170842](https://doi.org/10.1109/TIA.2022.3170842)
-- **Dataset**: 4 battery cells from public cycling datasets, tested under aging/degradation across cycles.
-- **What's new**: "NNGP" — a deep NN whose raw predictions get corrected by a **Gaussian process feedback loop** that models SOC trend correlation across cycles (using available energy as a covariate), plus adaptive weighted training to handle aging drift. MAE < 3.5% for 25-cycle-ahead forecasting. (Same author group as 2.6 — worth reading together.)
+- **Dataset**: Four cells from three public accelerated-aging datasets, each a different cathode/anode chemistry: **Cell-B0007** (NASA Ames Prognostics Center); **Cell-14** and **Cell-19**, A123 Systems APR18650M1A cells (Diao et al. dataset, 45°C/60°C); **Cell-9**, from the Severson et al. fast-charging dataset. Plus a second validation on the public **CALCE INR 18650-20R** (2 Ah) dataset under US06/FUDS/DST dynamic driving.
+- **What's new**: "NNGP" — a deep NN whose raw predictions get corrected by a **Gaussian process feedback loop** that models SOC trend correlation across cycles (using available energy, not time, as the covariate), plus adaptive weighted training to handle aging drift. MAE < 3.5% for 25-cycle-ahead forecasting on the aging datasets; MAE always < 0.95% on the CALCE dynamic-driving benchmark. (Same author group as 2.6 — worth reading together.)
 
 ### 3.2 A Novel Deep Neural Network Model for Estimating the SOC of Lithium-ion Battery (2022)
 - **Authors**: Qingrui Gong, Ping Wang, Ze Cheng
@@ -125,7 +124,7 @@ Compiled from handwritten research notes. 16 papers identified (2013–2024), sp
 - **Authors**: Qiao Wang, Min Ye, Meng Wei, Gaoqi Lian, Yan Li
 - **Venue**: Energy, 263 (Part B), 125718
 - **Link**: [DOI 10.1016/j.energy.2022.125718](https://doi.org/10.1016/j.energy.2022.125718)
-- **Dataset**: *(medium confidence)* Experimental data across multiple battery types/chemistries and aging states.
+- **Dataset**: In-house data across three cell types — **INR-18650** (ternary/NMC), **NCR-18650** (ternary/NMC, fresh + aged to 88% capacity), **LFP-26650** (LiFePO₄, fresh + aged to 88% capacity) — under DST/BJDST/US06/FUDS/UDDS at 25°C plus mixed drive cycles across a 10–40°C range. **Released publicly by the authors on Mendeley: [data.mendeley.com/datasets/rnvb47fp4t](https://data.mendeley.com/datasets/rnvb47fp4t)** — a strong, ready-to-use candidate for the implementation dataset list below.
 - **What's new**: A 2D-CNN builds a compact pre-trained "universal" SOC feature extractor (conv + avg pooling); a **closed-loop correction** feeds its output into **Kalman filter measurement equations**; **transfer learning + pruning** let the pre-trained model adapt fast across the "hierarchy" (different cell types / aging states / operating scenarios). RMSE < 2.47% generally, < 1.78% under severe disturbance.
   - *Note: your handwritten notes had two entries here ("closed-loop hierarchical" and "Deep CNN used for estimating Kalman filter") — after research these appear to be the same paper described twice, not two distinct papers. Flag if you have a separate citation in mind.*
 
@@ -134,10 +133,13 @@ Compiled from handwritten research notes. 16 papers identified (2013–2024), sp
 ## Implementation Notes (for the Python build)
 
 **Public datasets referenced across these papers** (best candidates to start with, roughly easiest → richest):
-- **NASA Randomized Battery Usage Dataset** (NASA Ames) — used in 3.2
+- **NASA Randomized Battery Usage Dataset** (NASA Ames) — used in 3.2; NASA's B0007 accelerated-aging cell also used in 3.1
 - **Oxford Battery Degradation Dataset** — used in 3.2
-- **CALCE 18650 NMC data** — used in 1.4 (DST/FUDS, 3 temperatures)
+- **CALCE 18650 NMC data** (incl. INR 18650-20R, 2Ah) — used in 1.4 (DST/FUDS, 3 temps), and confirmed used in 1.2 and 3.1 (US06/FUDS dynamic driving)
 - **McMaster HEV & Battery Lab LG 18650 data** — used in 2.1 (the foundational LSTM paper; clean 1Hz V/I/T/SOC data, good first target)
+- **Panasonic 18650PF (Kollmeyer/Mendeley)** — used in 2.5 (TCN); public, DOI 10.17632/WYKHT8Y7TG.1, 9 drive cycles × 3 temperatures — another clean, easy first target
+- **A123 APR18650M1A (Diao et al.)** and **Severson et al. fast-charging dataset** — used in 3.1 (NNGP) and 2.6 (USAL), aging-focused
+- **Wang et al. multi-chemistry dataset (Mendeley)** — used in 3.4; INR-18650/NCR-18650/LFP-26650 fresh + aged, wide temp range — richest of the newly-confirmed public sets, good candidate for the "push accuracy" / generalization stage
 
 **A natural build order**, roughly matching increasing complexity:
 1. **Baseline**: SVM or Random Forest on V/I/T features (§1.1, §1.6) — cheap sanity-check model.
@@ -146,4 +148,4 @@ Compiled from handwritten research notes. 16 papers identified (2013–2024), sp
 4. **Push accuracy**: try the CNN/U-Net (§3.3) or Conv+ULSAM+SRU (§3.2) architectures on NASA/Oxford data for a tighter error bound.
 5. **Stretch goal**: TCN + transfer learning (§2.5) if you want to test cross-cell/cross-condition generalization, which matters if you eventually want one model to work across multiple battery chemistries.
 
-Papers not yet fully deep-dived (GPR §1.2, IBMO-SVM §1.5, DCNN+Kalman §3.4, NNGP §3.1, sparse autoencoder §2.6) are good "if time permits" extensions rather than starting points — several have unconfirmed public datasets, which would need in-house data generation or substitution.
+All 16 papers are now verified against full text. GPR §1.2, TCN §2.5, NNGP §3.1, USAL §2.6, and DCNN+Kalman §3.4 all turned out to use public datasets (several the same CALCE/NASA/Severson/Diao sets, cross-referenced above), so they're stronger candidates than originally thought. IBMO-SVM §1.5 is confirmed in-house/non-public, so it stays lower priority for direct reuse.
