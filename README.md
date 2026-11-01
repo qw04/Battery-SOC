@@ -1,11 +1,32 @@
-# Battery SOC Estimation
+# Battery State-of-Charge Estimation
 
-Python implementation of several SOC-estimation approaches from the
-[**Literature Review**](https://qw04.github.io/Battery-SOC/literature_review.html),
-trained/evaluated on the NASA Randomized Battery Usage Dataset and the Oxford
-Battery Degradation Dataset 1. This file is the practical how-to-run guide;
-see the literature review for the papers, per-paper novelty summaries, and
-citations behind each implemented model.
+Benchmarking ML models and Kalman filters for Li-ion battery state-of-charge (SoC) estimation on the NASA Randomized Battery Usage and Oxford Battery Degradation datasets. My hybrid Conv1D + ULSAM + LSTM beat a plain LSTM on every split, cutting RMSE by up to ~5% (~3% on average). A simpler random forest still won on two of the three splits.
+
+Research internship at Warwick Manufacturing Group. **[Read the literature review](https://qw04.github.io/Battery-SOC/literature_review.html)**
+
+## Results
+
+RMSE in % SoC, lower is better:
+
+| Split | SVR | Random forest | LSTM | Hybrid (mine) |
+| --- | --- | --- | --- | --- |
+| NASA | 17.55 | 15.22 | 15.96 | **15.20** |
+| Oxford | 1.26 | **0.52** | 0.89 | 0.87 |
+| Both | 18.30 | **14.11** | 14.74 | 14.33 |
+
+**Also implemented:** a faithful reproduction of Conv1D + ULSAM + SRU (Gong et al. 2022), which my hybrid adapts by swapping the SRU for an LSTM; CNN U-Net; LSTM + UKF; and linear, extended and unscented Kalman filters.
+
+**Tech:** Python, PyTorch, scikit-learn, pandas, NumPy
+
+## What I'd do next
+
+- Test on Oxford data with dynamic load profiles; the windows used here come from constant-current segments
+- Reduce label noise on NASA, where SoC has to be reconstructed by coulomb counting, which helps explain its much higher error
+- Find out why the random forest wins on some splits before adding more model complexity
+
+## How this README is organised
+
+This file is the practical how-to-run guide. See the literature review for the papers and citations behind each model.
 
 ## Setup
 
